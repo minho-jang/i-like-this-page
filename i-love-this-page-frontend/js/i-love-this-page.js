@@ -1,5 +1,5 @@
-const API_BASEADDRESS = 'http://localhost:8080';
-const RESTAPI_BASEADDRESS = `${API_BASEADDRESS}/api/v1`;
+const ENDPOINT = 'http://localhost:8080';
+const RESTAPI_BASEADDRESS = `${ENDPOINT}/api/v1`;
 const iltp_div = document.getElementById('i-love-this-page');
 
 // first loading
