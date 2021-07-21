@@ -1,4 +1,4 @@
-package src.main.java.com.minhojang.ilikethispagebackend.utils;
+package com.minhojang.ilikethispagebackend.utils;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;

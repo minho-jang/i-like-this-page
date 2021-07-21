@@ -1,4 +1,4 @@
-package src.main.java.com.minhojang.ilikethispagebackend.models;
+package com.minhojang.ilikethispagebackend.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
