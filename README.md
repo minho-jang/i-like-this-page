@@ -1,4 +1,4 @@
-# i-love-this-page
+# i-like-this-page
 
 You can leave 'LIKE' on your favorite web page.
 

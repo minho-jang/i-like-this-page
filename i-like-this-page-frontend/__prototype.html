@@ -1,0 +1,56 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>i-like-this-page</title>
+  </head>
+  <body>
+    <!-- 프로토타입 연습용  -->
+    <div id="i-like-this-page">
+      <span id="iltp-box">
+        <span>🤍</span>
+        <span>2123</span>
+      </span>
+    </div>
+  </body>
+  <style>
+    html body {
+      margin: 2em;
+    }
+    #iltp-box {
+      text-align: center;
+      position: relative;
+      display: inline-block;
+      border-radius: 15%;
+      background-color: rgb(255, 202, 202);
+      padding: 0.5rem 1rem;
+      font-family: 'Fira Sans', sans-serif;
+      border: none;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    #iltp-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      -webkit-transform: scaleX(0.3);
+      transform: scaleX(0.3);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+    #iltp-box:hover::before {
+      opacity: 1;
+      background-color: rgb(255, 78, 78, 0.1);
+      -webkit-transform: scaleX(1);
+      transform: scaleX(1);
+      transition: -webkit-transform 0.6s cubic-bezier(0.08, 0.35, 0.13, 1.02), opacity 0.4s;
+      transition: transform 0.6s cubic-bezier(0.08, 0.35, 0.13, 1.02), opacity;
+    }
+  </style>
+</html>
