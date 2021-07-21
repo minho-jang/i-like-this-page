@@ -1,31 +1,66 @@
-const ENDPOINT = 'http://localhost:8080';
-const RESTAPI_BASEADDRESS = `${ENDPOINT}/api/v1`;
-const iltp_div = document.getElementById('i-like-this-page');
+const DOMAIN = 'http://localhost:8080';
+const RESTAPI_BASEADDRESS = `${DOMAIN}/api/v1`;
 
-// first loading
-window.addEventListener('load', async function () {
-  try {
-    // TODO 이것도 그냥 REST로 받아서 현재 얘가 클릭된 상태인지 아닌지를 같이 받아야 할듯
-    const response = await this.fetch(API_BASEADDRESS);
-    const data = await response.text();
-    iltp_div.innerHTML = data;
-  } catch (err) {
-    // TODO error handling
-    console.error(err);
-  }
-});
+const renderLikeButtonTo = (container) => {
+  const iltpBox = document.createElement('span');
+  const iltpBoxStyle = `
+    border-radius: 15%;
+    background-color: rgb(255, 202, 202);
+    font-family: 'Fira Sans', sans-serif;
+    padding: 0.5rem 1rem;`;
+  iltpBox.setAttribute('style', iltpBoxStyle);
+
+  const iltpIcon = document.createElement('span');
+  iltpIcon.setAttribute('id', 'iltp-content-icon');
+  iltpIcon.innerText = '💕';
+  iltpBox.appendChild(iltpIcon);
+
+  const iltpContent = document.createElement('span');
+  iltpContent.setAttribute('id', 'iltp-content-number');
+  iltpContent.setAttribute('style', 'margin-left: .4rem;');
+  iltpContent.innerText = 0;
+  iltpBox.appendChild(iltpContent);
+
+  container.appendChild(iltpBox);
+};
+
+const getLikeNumber = () => {
+  fetch(`${RESTAPI_BASEADDRESS}/like`)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      document.getElementById('iltp-content-number').innerHTML = 154;
+    })
+    .catch((err) => {
+      // TODO: error handling
+      console.error(err);
+    });
+};
+
+const iltpContainer = document.getElementById('i-like-this-page');
+const iltpContainerStyle = `
+  cursor: pointer;
+`;
+iltpContainer.setAttribute('style', iltpContainerStyle);
 
 // 'like' click event
-iltp_div.addEventListener('click', async function () {
+iltpContainer.addEventListener('click', function () {
   console.log('LIKE CLICK!!');
-  try {
-    const response = await fetch(`${RESTAPI_BASEADDRESS}/like`);
-    const data = await response.json();
-    console.log(data);
-    const iltp_number = document.getElementById('iltp-content-number');
-    iltp_number.innerText = Number.parseInt(iltp_number.innerText) + 1;
-  } catch (err) {
-    // TODO error handling
-    console.error(err);
-  }
+  fetch(`${RESTAPI_BASEADDRESS}/like`)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      const iltpNumber = document.getElementById('iltp-content-number');
+      iltpNumber.innerText = Number.parseInt(iltpNumber.innerText) + 1;
+    })
+    .catch((err) => {
+      // TODO: error handling
+      console.error(err);
+    });
+});
+
+renderLikeButtonTo(iltpContainer);
+
+window.addEventListener('load', () => {
+  getLikeNumber();
 });
