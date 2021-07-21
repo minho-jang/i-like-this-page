@@ -1,4 +1,4 @@
-package src.main.java.com.minhojang.ilikethispagebackend.api;
+package com.minhojang.ilikethispagebackend.api;
 
 import com.minhojang.ilikethispagebackend.models.Like;
 import com.minhojang.ilikethispagebackend.services.LikeService;

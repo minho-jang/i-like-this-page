@@ -1,4 +1,4 @@
-package src.main.java.com.minhojang.ilikethispagebackend;
+package com.minhojang.ilikethispagebackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

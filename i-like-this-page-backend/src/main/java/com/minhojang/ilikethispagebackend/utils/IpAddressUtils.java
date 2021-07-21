@@ -1,4 +1,4 @@
-package src.main.java.com.minhojang.ilikethispagebackend.utils;
+package com.minhojang.ilikethispagebackend.utils;
 
 public class IpAddressUtils {
 

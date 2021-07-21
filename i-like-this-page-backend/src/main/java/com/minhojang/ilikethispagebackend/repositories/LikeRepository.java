@@ -1,4 +1,4 @@
-package src.main.java.com.minhojang.ilikethispagebackend.repositories;
+package com.minhojang.ilikethispagebackend.repositories;
 
 import com.minhojang.ilikethispagebackend.models.Like;
 import org.springframework.data.jpa.repository.JpaRepository;
