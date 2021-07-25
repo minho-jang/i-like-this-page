@@ -15,7 +15,8 @@ public class MainRestController {
   LikeService likeService;
 
   @GetMapping("/like")
-  public ApiResult like() {
+  public ApiResult like(@ClientIp String clientIp) {
+    // TODO clientIp랑 url 묶어서 하나의 클래스로 만들어서 쓰자
     return new ApiResult(null, "SUCCESS");
   }
 
