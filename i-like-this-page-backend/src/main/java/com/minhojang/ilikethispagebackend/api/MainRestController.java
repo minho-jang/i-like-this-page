@@ -1,14 +1,17 @@
 package com.minhojang.ilikethispagebackend.api;
 
+import com.minhojang.ilikethispagebackend.configures.ClientIp;
 import com.minhojang.ilikethispagebackend.models.Like;
 import com.minhojang.ilikethispagebackend.services.LikeService;
 import com.minhojang.ilikethispagebackend.utils.IpAddressUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1")
 @CrossOrigin
+@Slf4j
 public class MainRestController {
 
   @Autowired
@@ -22,11 +25,12 @@ public class MainRestController {
 
   @PostMapping("/like")
   public ApiResult likeSave() {
-    Like like = new Like(null, // id (PK)
-        IpAddressUtils.ipv4ToLong("127.0.0.1"), null, // ip_address_v6
-        "http://localhost:8080/", null // create_at
-    );
-    likeService.save(like);
+    System.out.println("LIKE SAVE");
+//    Like like = new Like(null, // id (PK)
+//        IpAddressUtils.ipv4ToLong("127.0.0.1"), null, // ip_address_v6
+//        "http://localhost:8080/", null // create_at
+//    );
+//    likeService.save(like);
     return new ApiResult(null, "SUCCESS");
   }
 }
