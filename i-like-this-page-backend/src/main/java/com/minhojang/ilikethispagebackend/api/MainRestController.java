@@ -1,9 +1,7 @@
 package com.minhojang.ilikethispagebackend.api;
 
-import com.minhojang.ilikethispagebackend.configures.ClientIp;
-import com.minhojang.ilikethispagebackend.models.Like;
+import com.minhojang.ilikethispagebackend.configures.LikeRequest;
 import com.minhojang.ilikethispagebackend.services.LikeService;
-import com.minhojang.ilikethispagebackend.utils.IpAddressUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +16,10 @@ public class MainRestController {
   LikeService likeService;
 
   @GetMapping("/like")
-  public ApiResult like(@ClientIp String clientIp) {
-    // TODO clientIp랑 url 묶어서 하나의 클래스로 만들어서 쓰자
+  public ApiResult like(LikeRequest param) {
+    System.out.println(param.getClientIp());
+    System.out.println(param.getUrl());
+
     return new ApiResult(null, "SUCCESS");
   }
 

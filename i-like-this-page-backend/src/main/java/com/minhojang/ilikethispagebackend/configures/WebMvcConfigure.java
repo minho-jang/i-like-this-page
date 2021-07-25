@@ -12,12 +12,12 @@ import java.util.List;
 public class WebMvcConfigure implements WebMvcConfigurer {
 
   @Bean
-  public ClientIpResolver clientIpResolver() {
-    return new ClientIpResolver();
+  public LikeRequestHandlerMethodArgumentResolver LikeRequestHandlerMethodArgumentResolver() {
+    return new LikeRequestHandlerMethodArgumentResolver();
   }
 
   @Override
   public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-    argumentResolvers.add(clientIpResolver());
+    argumentResolvers.add(LikeRequestHandlerMethodArgumentResolver());
   }
 }

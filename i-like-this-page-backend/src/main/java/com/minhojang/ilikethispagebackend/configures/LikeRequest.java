@@ -2,8 +2,6 @@ package com.minhojang.ilikethispagebackend.configures;
 
 import com.minhojang.ilikethispagebackend.errors.InvalidArgumentException;
 
-import java.security.InvalidParameterException;
-
 public class LikeRequest implements LikeUrl {
 
   private final String clientIp;
@@ -24,11 +22,11 @@ public class LikeRequest implements LikeUrl {
 
   @Override
   public String getClientIp() {
-    return null;
+    return this.clientIp;
   }
 
   @Override
   public String getUrl() {
-    return null;
+    return this.url;
   }
 }
