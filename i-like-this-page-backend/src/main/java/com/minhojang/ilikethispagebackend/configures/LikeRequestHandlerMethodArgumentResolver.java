@@ -9,7 +9,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class LikeRequestHandlerMethodResolver implements HandlerMethodArgumentResolver {
+public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
   private String urlParameterName = "url";
 
   private final String[] IP_HEADER_CANDIDATES = {
