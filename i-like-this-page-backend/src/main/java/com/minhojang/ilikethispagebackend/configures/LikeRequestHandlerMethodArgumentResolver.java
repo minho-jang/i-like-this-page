@@ -1,6 +1,5 @@
 package com.minhojang.ilikethispagebackend.configures;
 
-import lombok.NonNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -28,7 +27,7 @@ public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodAr
 
   @Override
   public boolean supportsParameter(MethodParameter parameter) {
-    return LikeUrl.class.isAssignableFrom(parameter.getParameterType());
+    return Client.class.isAssignableFrom(parameter.getParameterType());
   }
 
   @Override

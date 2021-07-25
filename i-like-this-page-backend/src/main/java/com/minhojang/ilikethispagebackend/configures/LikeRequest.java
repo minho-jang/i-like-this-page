@@ -2,7 +2,7 @@ package com.minhojang.ilikethispagebackend.configures;
 
 import com.minhojang.ilikethispagebackend.errors.InvalidArgumentException;
 
-public class LikeRequest implements LikeUrl {
+public class LikeRequest implements Client {
 
   private final String clientIp;
   private final String url;

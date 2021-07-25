@@ -1,6 +1,6 @@
 package com.minhojang.ilikethispagebackend.configures;
 
-public interface LikeUrl {
+public interface Client {
 
   String getClientIp();
 
