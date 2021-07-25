@@ -46,7 +46,7 @@ iltpContainer.setAttribute('style', iltpContainerStyle);
 // 'like' click event
 iltpContainer.addEventListener('click', function () {
   console.log('LIKE CLICK!!');
-  fetch(`${RESTAPI_BASEADDRESS}/like`)
+  fetch(`${RESTAPI_BASEADDRESS}/like`, { method: 'POST' })
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
