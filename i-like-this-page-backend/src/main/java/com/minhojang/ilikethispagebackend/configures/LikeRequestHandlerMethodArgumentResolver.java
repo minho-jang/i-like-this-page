@@ -54,7 +54,7 @@ public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodAr
     for (String header : IP_HEADER_CANDIDATES) {
       String ip = req.getHeader(header);
 
-      if (ip != null && ip.length() != 0 && "unknown".equals(ip)) {
+      if (ip != null && ip.length() != 0 && !"unknown".equals(ip)) {
         return ip;
       }
     }
