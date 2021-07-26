@@ -3,6 +3,8 @@ const RESTAPI_BASEADDRESS = `${DOMAIN}/api/v1`;
 
 const renderLikeButtonTo = (container) => {
   const iltpBox = document.createElement('span');
+  iltpBox.setAttribute('id', 'iltp-box');
+
   const iltpBoxStyle = `
     border-radius: 15%;
     background-color: rgb(255, 202, 202);
@@ -22,6 +24,12 @@ const renderLikeButtonTo = (container) => {
   iltpBox.appendChild(iltpContent);
 
   container.appendChild(iltpBox);
+
+  const cssLinkElement = document.createElement("link");
+  cssLinkElement.setAttribute('href', 'css/i-like-this-page.css');
+  cssLinkElement.setAttribute('type', 'text/css');
+  cssLinkElement.setAttribute('rel', 'stylesheet');
+  document.head.appendChild(cssLinkElement);
 };
 
 const getLikeNumber = () => {
