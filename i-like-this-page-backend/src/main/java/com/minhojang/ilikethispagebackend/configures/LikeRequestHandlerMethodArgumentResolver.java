@@ -1,5 +1,6 @@
 package com.minhojang.ilikethispagebackend.configures;
 
+import com.minhojang.ilikethispagebackend.errors.InvalidArgumentException;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -9,8 +10,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import javax.servlet.http.HttpServletRequest;
 
 public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
-  private String urlParameterName = "url";
-
   private final String[] IP_HEADER_CANDIDATES = {
           "X-Forwarded-For",
           "Proxy-Client-IP",
@@ -37,19 +36,25 @@ public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodAr
           NativeWebRequest webRequest,
           WebDataBinderFactory binderFactory
   ) {
-    String url = webRequest.getParameter(urlParameterName);
+
+    String url = webRequest.getParameter("url");
     String clientIp = getClientIpFromRequest(webRequest);
 
-    // TODO: url, clientIp validation check
-    // TODO: url에서 "http://" 빼기
+    checkString(clientIp, "Client IP cannot be empty.");
+    checkString(url, "URL cannot be empty.");
 
     return new LikeRequest(clientIp, url);
   }
 
+  private void checkString(String str, String errorMessage) {
+    if (str == null || "".equals(str))
+      throw new InvalidArgumentException(errorMessage);
+  }
+
   private String getClientIpFromRequest(NativeWebRequest webRequest) {
     HttpServletRequest req = webRequest.getNativeRequest(HttpServletRequest.class);
-
-    // TODO: req can be null
+    if (req == null)
+      throw new RuntimeException("HttpServletRequest must not be null");
 
     for (String header : IP_HEADER_CANDIDATES) {
       String ip = req.getHeader(header);

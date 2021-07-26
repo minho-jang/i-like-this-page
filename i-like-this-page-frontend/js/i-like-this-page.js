@@ -33,6 +33,7 @@ const renderLikeButtonTo = (container) => {
 };
 
 const getLikeNumber = () => {
+  // TODO: url에서 "http://" 빼고 파라미터 추가하기
   fetch(`${RESTAPI_BASEADDRESS}/like`)
     .then((response) => response.json())
     .then((data) => {
