@@ -1,7 +1,8 @@
 package com.minhojang.ilikethispagebackend.configures;
 
-import com.minhojang.ilikethispagebackend.errors.InvalidArgumentException;
+import lombok.Getter;
 
+@Getter
 public class LikeRequest implements Client {
 
   private final String clientIp;
@@ -10,15 +11,5 @@ public class LikeRequest implements Client {
   public LikeRequest(String clientIp, String url) {
     this.clientIp = clientIp;
     this.url = url;
-  }
-
-  @Override
-  public String getClientIp() {
-    return this.clientIp;
-  }
-
-  @Override
-  public String getUrl() {
-    return this.url;
   }
 }
