@@ -25,7 +25,7 @@ public class MainRestController {
   @PostMapping("/like")
   public ApiResult<UserLikeVo> setLike(LikeRequest param) {
     return ApiResult.success(
-            likeService.save(param.getUrl(), param.getClientIp())
+            likeService.saveLike(param.getUrl(), param.getClientIp())
     );
   }
 }

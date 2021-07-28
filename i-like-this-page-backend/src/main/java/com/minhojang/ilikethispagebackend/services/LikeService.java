@@ -11,37 +11,26 @@ import java.util.List;
 
 @Service
 public class LikeService {
+
   @Autowired
   private LikeRepository likeRepository;
 
-  public Long countLike(String url) {
+  public Long countLikeOf(String url) {
     return likeRepository.countByUrl(url);
   }
 
   public Boolean isLikeUrl(String url, String ipAddress) {
-    // TODO: apiAddress가 ipv4인지 ipv6인지
-    List<Like> result = likeRepository.findByUrlAndIpAddressV4(url, 0L/* TODO: ipAddress to ipv4 */);
-    // or
-     List<Like> other = likeRepository.findByUrlAndIpAddressV6(url, new byte[] {}/* TODO: ipAddress to ipv6 */);
-
+    List<Like> result = likeRepository.findByUrlAndIpAddress(url, ipAddress);
     return result.size() > 0;
   }
 
   public UserLikeVo getLike(String url, String ipAddress) {
-//    return new UserLikeVo(countLike(url), isLikeUrl(url, ipAddress));
-    return new UserLikeVo(23, false);
+    return new UserLikeVo(countLikeOf(url), isLikeUrl(url, ipAddress));
   }
 
   @Transactional
-  public UserLikeVo save(String url, String ipAddress) {
-    Like saved = likeRepository.save(new Like(
-            null,
-            0L/* TODO: ipAddress to ipv4 */,
-            new byte[] {}/* TODO: ipAddress to ipv6 */,
-            url,
-            null)
-    );
-
-    return new UserLikeVo(countLike(url), isLikeUrl(url, ipAddress));
+  public UserLikeVo saveLike(String url, String ipAddress) {
+    likeRepository.save(new Like(null, ipAddress, url, null));
+    return getLike(url, ipAddress);
   }
 }

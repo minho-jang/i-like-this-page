@@ -21,12 +21,10 @@ public class Like {
   @GeneratedValue
   private Long likeId;
 
-  @Column(name = "ip_address_v4")
-  private Long ipAddressV4;
+  @Column(name = "ip_address")
+  private String ipAddress;
 
-  @Column(name = "ip_address_v6")
-  private byte[] ipAddressV6;
-
+  @Column(name = "url")
   private String url;
 
   @CreationTimestamp
