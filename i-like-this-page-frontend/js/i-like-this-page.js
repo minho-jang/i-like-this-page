@@ -33,6 +33,7 @@ const renderLikeButtonTo = (container) => {
 };
 
 const getLikeNumber = () => {
+  // TODO: url에서 "http://" 빼고 파라미터 추가하기
   fetch(`${RESTAPI_BASEADDRESS}/like`)
     .then((response) => response.json())
     .then((data) => {
@@ -54,7 +55,7 @@ iltpContainer.setAttribute('style', iltpContainerStyle);
 // 'like' click event
 iltpContainer.addEventListener('click', function () {
   console.log('LIKE CLICK!!');
-  fetch(`${RESTAPI_BASEADDRESS}/like`)
+  fetch(`${RESTAPI_BASEADDRESS}/like`, { method: 'POST' })
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
