@@ -55,8 +55,8 @@ public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodAr
     String clientIp = getClientIpFromRequest(servletRequest);
     String url = getUrlFromRequest(servletRequest);
 
-    checkString(clientIp, "Client IP cannot be empty.");
-    checkString(url, "URL cannot be empty.");
+    throwExceptionIfStringEmpty(clientIp, "Client IP cannot be empty.");
+    throwExceptionIfStringEmpty(url, "URL cannot be empty.");
 
     return new LikeRequest(clientIp, url);
   }
@@ -97,9 +97,8 @@ public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodAr
       ServletInputStream input = servletRequest.getInputStream();
       String body = IOUtils.toString(input, StandardCharsets.UTF_8);
       if (StringUtils.isNotEmpty(body)) {
-        Map<String, String> map = new HashMap<>();
-        map = JsonUtils.fromJson(body, map.getClass());
-        url = map.get("url");
+        Map<String, Object> map = JsonUtils.jsonStringToMap(body);;
+        url = (String) map.get("url");
       }
 
     } catch(IOException e) {
@@ -109,9 +108,8 @@ public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodAr
     return url;
   }
 
-  private void checkString(String str, String errorMessage) {
+  private void throwExceptionIfStringEmpty(String str, String errorMessage) {
     if (StringUtils.isEmpty(str))
-      // TODO: Bad Request
       throw new InvalidArgumentException(errorMessage);
   }
 }
