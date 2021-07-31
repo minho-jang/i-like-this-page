@@ -9,8 +9,8 @@ import java.util.List;
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Long> {
 
-  long countByUrl(String url);
+	long countByUrl(String url);
 
-  List<Like> findByUrlAndIpAddress(String url, String ipAddress);
+	List<Like> findByUrlAndIpAddress(String url, String ipAddress);
 
 }

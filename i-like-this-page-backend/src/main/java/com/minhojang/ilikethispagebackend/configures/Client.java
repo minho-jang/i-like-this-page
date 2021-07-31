@@ -2,8 +2,8 @@ package com.minhojang.ilikethispagebackend.configures;
 
 public interface Client {
 
-  String getClientIp();
+	String getClientIp();
 
-  String getUrl();
+	String getUrl();
 
 }

@@ -17,16 +17,16 @@ import java.time.LocalDateTime;
 @Entity(name = "likes")
 public class Like {
 
-  @Id
-  @GeneratedValue
-  private Long likeId;
+	@Id
+	@GeneratedValue
+	private Long likeId;
 
-  @Column(name = "ip_address")
-  private String ipAddress;
+	@Column(name = "ip_address")
+	private String ipAddress;
 
-  @Column(name = "url")
-  private String url;
+	@Column(name = "url")
+	private String url;
 
-  @CreationTimestamp
-  private LocalDateTime createAt;
+	@CreationTimestamp
+	private LocalDateTime createAt;
 }

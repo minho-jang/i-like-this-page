@@ -3,23 +3,23 @@ package com.minhojang.ilikethispagebackend.api;
 import org.springframework.http.HttpStatus;
 
 public class ApiError {
-  private final String message;
-  private final int status;
+	private final String message;
+	private final int status;
 
-  ApiError(Throwable throwable, HttpStatus status) {
-    this(throwable.getMessage(), status);
-  }
+	ApiError(Throwable throwable, HttpStatus status) {
+		this(throwable.getMessage(), status);
+	}
 
-  ApiError(String message, HttpStatus status) {
-    this.message = message;
-    this.status = status.value();
-  }
+	ApiError(String message, HttpStatus status) {
+		this.message = message;
+		this.status = status.value();
+	}
 
-  public String getMessage() {
-    return message;
-  }
+	public String getMessage() {
+		return message;
+	}
 
-  public int getStatus() {
-    return status;
-  }
+	public int getStatus() {
+		return status;
+	}
 }
