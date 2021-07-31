@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 
 public class IOUtils {
 
-  public static String toString(InputStream input, Charset charset) {
-    return new BufferedReader(new InputStreamReader(input, charset))
-            .lines()
-            .collect(Collectors.joining("\n"));
-  }
+	public static String toString(InputStream input, Charset charset) {
+		return new BufferedReader(new InputStreamReader(input, charset))
+				.lines()
+				.collect(Collectors.joining("\n"));
+	}
 
 }

@@ -12,25 +12,25 @@ import java.util.List;
 @Service
 public class LikeService {
 
-  @Autowired
-  private LikeRepository likeRepository;
+	@Autowired
+	private LikeRepository likeRepository;
 
-  public Long countLikeOf(String url) {
-    return likeRepository.countByUrl(url);
-  }
+	public Long countLikeOf(String url) {
+		return likeRepository.countByUrl(url);
+	}
 
-  public Boolean isLikeUrl(String url, String ipAddress) {
-    List<Like> result = likeRepository.findByUrlAndIpAddress(url, ipAddress);
-    return result.size() > 0;
-  }
+	public Boolean isLikeUrl(String url, String ipAddress) {
+		List<Like> result = likeRepository.findByUrlAndIpAddress(url, ipAddress);
+		return result.size() > 0;
+	}
 
-  public UserLikeVo getLike(String url, String ipAddress) {
-    return new UserLikeVo(countLikeOf(url), isLikeUrl(url, ipAddress));
-  }
+	public UserLikeVo getLike(String url, String ipAddress) {
+		return new UserLikeVo(countLikeOf(url), isLikeUrl(url, ipAddress));
+	}
 
-  @Transactional
-  public UserLikeVo saveLike(String url, String ipAddress) {
-    likeRepository.save(new Like(null, ipAddress, url, null));
-    return getLike(url, ipAddress);
-  }
+	@Transactional
+	public UserLikeVo saveLike(String url, String ipAddress) {
+		likeRepository.save(new Like(null, ipAddress, url, null));
+		return getLike(url, ipAddress);
+	}
 }

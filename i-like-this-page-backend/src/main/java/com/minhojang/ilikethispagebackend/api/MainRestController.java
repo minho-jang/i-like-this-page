@@ -12,20 +12,20 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class MainRestController {
 
-  @Autowired
-  LikeService likeService;
+	@Autowired
+	LikeService likeService;
 
-  @GetMapping("/like")
-  public ApiResult<UserLikeVo> getLike(LikeRequest param) {
-    return ApiResult.success(
-            likeService.getLike(param.getUrl(), param.getClientIp())
-    );
-  }
+	@GetMapping("/like")
+	public ApiResult<UserLikeVo> getLike(LikeRequest param) {
+		return ApiResult.success(
+				likeService.getLike(param.getUrl(), param.getClientIp())
+		);
+	}
 
-  @PostMapping("/like")
-  public ApiResult<UserLikeVo> setLike(LikeRequest param) {
-    return ApiResult.success(
-            likeService.saveLike(param.getUrl(), param.getClientIp())
-    );
-  }
+	@PostMapping("/like")
+	public ApiResult<UserLikeVo> setLike(LikeRequest param) {
+		return ApiResult.success(
+				likeService.saveLike(param.getUrl(), param.getClientIp())
+		);
+	}
 }
