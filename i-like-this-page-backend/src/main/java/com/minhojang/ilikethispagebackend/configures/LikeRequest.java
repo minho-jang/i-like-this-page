@@ -1,7 +1,9 @@
 package com.minhojang.ilikethispagebackend.configures;
 
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString
 @Getter
 public class LikeRequest implements Client {
 
@@ -12,4 +14,5 @@ public class LikeRequest implements Client {
 		this.clientIp = clientIp;
 		this.url = url;
 	}
+
 }
