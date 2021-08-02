@@ -1,75 +1,122 @@
-const DOMAIN = 'http://localhost:8080';
-const RESTAPI_BASEADDRESS = `${DOMAIN}/api/v1`;
+import { getLike, deleteLike, addLike } from "./api.js";
 
-const renderLikeButtonTo = (container) => {
-  const iltpBox = document.createElement('span');
-  iltpBox.setAttribute('id', 'iltp-box');
+const likeBackgroundColor = "rgb(255, 202, 202)";
+const errorBackgroundColor = "rgb(214, 214, 214)";
+
+const renderButton = (likeOrError) => {
+  const iltpBox = document.createElement("span");
+  iltpBox.setAttribute("id", "iltp-box");
 
   const iltpBoxStyle = `
     border-radius: 15%;
-    background-color: rgb(255, 202, 202);
+    background-color: ${
+      likeOrError ? likeBackgroundColor : errorBackgroundColor
+    };
     font-family: 'Fira Sans', sans-serif;
     padding: 0.5rem 1rem;`;
-  iltpBox.setAttribute('style', iltpBoxStyle);
+  iltpBox.setAttribute("style", iltpBoxStyle);
 
-  const iltpIcon = document.createElement('span');
-  iltpIcon.setAttribute('id', 'iltp-content-icon');
-  iltpIcon.innerText = '💕';
+  const iltpIcon = document.createElement("span");
+  iltpIcon.setAttribute("id", "iltp-content-icon");
+  iltpIcon.innerText = likeOrError ? "💕" : "🖤";
   iltpBox.appendChild(iltpIcon);
 
-  const iltpContent = document.createElement('span');
-  iltpContent.setAttribute('id', 'iltp-content-number');
-  iltpContent.setAttribute('style', 'margin-left: .4rem;');
-  iltpContent.innerText = 0;
+  const iltpContent = document.createElement("span");
+  iltpContent.setAttribute("id", "iltp-content-number");
+  iltpContent.setAttribute("style", "margin-left: .4rem;");
+  iltpContent.innerText = likeOrError ? "0" : "ERROR";
   iltpBox.appendChild(iltpContent);
 
-  container.appendChild(iltpBox);
+  removeLikeButtonIfExisted();
+  iltpContainer.appendChild(iltpBox);
 
   const cssLinkElement = document.createElement("link");
-  cssLinkElement.setAttribute('href', 'css/i-like-this-page.css');
-  cssLinkElement.setAttribute('type', 'text/css');
-  cssLinkElement.setAttribute('rel', 'stylesheet');
+  cssLinkElement.setAttribute("href", "css/i-like-this-page.css");
+  cssLinkElement.setAttribute("type", "text/css");
+  cssLinkElement.setAttribute("rel", "stylesheet");
   document.head.appendChild(cssLinkElement);
 };
 
-const getLikeNumber = () => {
-  // TODO: url에서 "http://" 빼고 파라미터 추가하기
-  fetch(`${RESTAPI_BASEADDRESS}/like`)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      document.getElementById('iltp-content-number').innerHTML = 154;
-    })
-    .catch((err) => {
-      // TODO: error handling
-      console.error(err);
-    });
+const removeLikeButtonIfExisted = () => {
+  if (iltpContainer.childNodes.length > 0) {
+    iltpContainer.removeChild(iltpContainer.childNodes[0]);
+  }
 };
 
-const iltpContainer = document.getElementById('i-like-this-page');
+let userLikeStatus = false;
+const iltpContainer = document.getElementById("i-like-this-page");
 const iltpContainerStyle = `
   cursor: pointer;
 `;
-iltpContainer.setAttribute('style', iltpContainerStyle);
+iltpContainer.setAttribute("style", iltpContainerStyle);
 
-// 'like' click event
-iltpContainer.addEventListener('click', function () {
-  console.log('LIKE CLICK!!');
-  fetch(`${RESTAPI_BASEADDRESS}/like`, { method: 'POST' })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      const iltpNumber = document.getElementById('iltp-content-number');
-      iltpNumber.innerText = Number.parseInt(iltpNumber.innerText) + 1;
-    })
-    .catch((err) => {
-      // TODO: error handling
-      console.error(err);
-    });
+iltpContainer.addEventListener("click", function () {
+  const urlWithoutProtocol = window.location.host + window.location.pathname;
+
+  if (userLikeStatus) {
+    cancelLikeAndRender(urlWithoutProtocol);
+  } else {
+    addLikeAndRender(urlWithoutProtocol);
+  }
 });
 
-renderLikeButtonTo(iltpContainer);
+const getLikeAndRender = (currentLocation) => {
+  getLike(currentLocation)
+    .then((data) => {
+      if (!data.success) {
+        console.error(data.error.message);
+        renderErrorButtonTo(iltpContainer, data.error.status);
+        return;
+      }
 
-window.addEventListener('load', () => {
-  getLikeNumber();
+      console.log(data);
+      userLikeStatus = data.response.urlLike;
+      document.getElementById("iltp-content-number").innerHTML =
+        data.response.likeCount;
+    })
+    .catch((err) => handleError(err));
+}
+
+const addLikeAndRender = (currentLocation) => {
+  addLike(currentLocation)
+    .then((data) => {
+      console.log(data);
+      if (!data.success) {
+        handleError(data.error);
+        return;
+      }
+
+      userLikeStatus = data.response.urlLike;
+      document.getElementById("iltp-content-number").innerText =
+        data.response.likeCount;
+    })
+    .catch((err) => handleError(err));
+}
+
+const cancelLikeAndRender = (currentLocation) => {
+  deleteLike(currentLocation)
+    .then((data) => {
+      console.log(data);
+      if (!data.success) {
+        handleError(data.error);
+        return;
+      }
+
+      userLikeStatus = data.response.urlLike;
+      document.getElementById("iltp-content-number").innerText =
+        data.response.likeCount;
+    })
+    .catch((err) => handleError(err));
+}
+
+const handleError = (err) => {
+  console.error(err);
+  renderButton(false);
+};
+
+renderButton(true);
+
+window.addEventListener("load", () => {
+  const currentLocation = window.location.host + window.location.pathname;
+  getLikeAndRender(currentLocation);
 });
