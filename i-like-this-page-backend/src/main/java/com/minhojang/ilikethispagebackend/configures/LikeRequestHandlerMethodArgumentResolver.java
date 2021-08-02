@@ -1,6 +1,7 @@
 package com.minhojang.ilikethispagebackend.configures;
 
 import com.minhojang.ilikethispagebackend.errors.InvalidArgumentException;
+import com.minhojang.ilikethispagebackend.errors.UnsupportedMethodException;
 import com.minhojang.ilikethispagebackend.utils.IOUtils;
 import com.minhojang.ilikethispagebackend.utils.JsonUtils;
 import com.minhojang.ilikethispagebackend.utils.StringUtils;
@@ -79,12 +80,11 @@ public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodAr
 		if ("GET".equals(method)) {
 			return getUrlFromGetRequest(servletRequest);
 
-		} else if ("POST".equals(method)) {
+		} else if ("POST".equals(method) || "DELETE".equals(method)) {
 			return getUrlFromPostRequest(servletRequest);
 
 		} else {
-			// TODO: Bad Request
-			throw new RuntimeException(method + " is an unsupported method");
+			throw new UnsupportedMethodException(method + " is an unsupported method");
 		}
 	}
 

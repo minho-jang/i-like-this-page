@@ -13,4 +13,6 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 
 	List<Like> findByUrlAndIpAddress(String url, String ipAddress);
 
+	void deleteByUrlAndIpAddress(String url, String ipAddress);
+
 }
