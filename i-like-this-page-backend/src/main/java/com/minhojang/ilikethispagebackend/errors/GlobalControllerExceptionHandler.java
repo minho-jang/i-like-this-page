@@ -26,7 +26,8 @@ public class GlobalControllerExceptionHandler {
 
 	@ExceptionHandler({
 			JsonException.class,
-			InvalidArgumentException.class
+			InvalidArgumentException.class,
+			UnsupportedMethodException.class
 	})
 	public ResponseEntity<?> handleBadRequestException(Exception e) {
 		return newResponse(e, HttpStatus.BAD_REQUEST);
