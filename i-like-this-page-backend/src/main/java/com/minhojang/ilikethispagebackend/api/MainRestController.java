@@ -28,4 +28,11 @@ public class MainRestController {
 				likeService.saveLike(param.getUrl(), param.getClientIp())
 		);
 	}
+
+	@DeleteMapping("/like")
+	public ApiResult<UserLikeVo> subtractLike(LikeRequest param) {
+		return ApiResult.success(
+				likeService.deleteLike(param.getUrl(), param.getClientIp())
+		);
+	}
 }

@@ -80,11 +80,10 @@ public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodAr
 		if ("GET".equals(method)) {
 			return getUrlFromGetRequest(servletRequest);
 
-		} else if ("POST".equals(method)) {
+		} else if ("POST".equals(method) || "DELETE".equals(method)) {
 			return getUrlFromPostRequest(servletRequest);
 
 		} else {
-			// TODO: Bad Request
 			throw new UnsupportedMethodException(method + " is an unsupported method");
 		}
 	}

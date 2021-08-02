@@ -33,4 +33,10 @@ public class LikeService {
 		likeRepository.save(new Like(null, ipAddress, url, null));
 		return getLike(url, ipAddress);
 	}
+
+	@Transactional
+	public UserLikeVo deleteLike(String url, String ipAddress) {
+		likeRepository.deleteByUrlAndIpAddress(url, ipAddress);
+		return getLike(url, ipAddress);
+	}
 }
