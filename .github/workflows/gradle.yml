@@ -13,6 +13,9 @@ jobs:
   backend_ci:
 
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: i-like-this-page-backend
 
     steps:
     - name: Checkout
