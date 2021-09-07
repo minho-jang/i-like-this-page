@@ -13,6 +13,9 @@ jobs:
   backend_ci:
 
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: i-like-this-page-backend
 
     steps:
     - name: Checkout
@@ -27,9 +30,6 @@ jobs:
         
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-      
-    - name: Test
-      run: ./gradlew test
-      
-    - name: Build with Gradle
-      run: ./gradlew build
+
+    - name: Test and Build with Gradle
+      run: ./gradlew clean build
