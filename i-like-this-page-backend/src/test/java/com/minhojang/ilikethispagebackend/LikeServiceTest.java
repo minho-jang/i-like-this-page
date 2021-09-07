@@ -3,6 +3,7 @@ package com.minhojang.ilikethispagebackend;
 import com.minhojang.ilikethispagebackend.models.Like;
 import com.minhojang.ilikethispagebackend.repositories.LikeRepository;
 import com.minhojang.ilikethispagebackend.services.LikeService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@DisplayName("LikeService 테스트")
 @SpringBootTest
 public class LikeServiceTest {
 
@@ -19,6 +21,7 @@ public class LikeServiceTest {
 	@Autowired
 	private LikeRepository likeRepository;
 
+	@DisplayName("해당 URL과 IP주소와 함께 좋아요를 저장한다.")
 	@Test
 	public void saveLike() {
 		// given
@@ -34,6 +37,7 @@ public class LikeServiceTest {
 		assertEquals(like.getIpAddress(), ipAddress);
 	}
 
+	@DisplayName("해당 URL에 대한 좋아요를 개수를 센다.")
 	@Test
 	public void getTheNumberOfLikesOfUrl() {
 		// given
@@ -46,6 +50,7 @@ public class LikeServiceTest {
 		assertEquals(1, result);
 	}
 
+	@DisplayName("해당 URL과 IP주소를 가지는 좋아요를 삭제한다.")
 	@Test
 	public void deleteLikeOfUrl() {
 		// given
