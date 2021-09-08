@@ -19,7 +19,7 @@ jobs:
 
     steps:
     - name: workflow job test 1
-      run: echo 'BACKEND CI START'
+      run: echo BACKEND CI START
       
     - name: Checkout
       uses: actions/checkout@v2
@@ -46,5 +46,5 @@ jobs:
         
     steps:
     - name: workflow job test 2
-      run: echo 'BACKEND CD START'
+      run: echo BACKEND CD START
       
