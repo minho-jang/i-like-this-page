@@ -40,8 +40,10 @@ jobs:
     runs-on: ubuntu-latest
         
     steps:
+    - run: echo $PWD
+    
     - name: Zip entire project directory
-      run: zip -r iltp-backend.zip *
+      run: zip -r iltp-backend *
     
     - name: Make Directory for deploy
       run: mkdir deploy
