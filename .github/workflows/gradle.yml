@@ -18,8 +18,7 @@ jobs:
         working-directory: i-like-this-page-backend
 
     steps:
-    - name: workflow job test 1
-      run: echo BACKEND CI START
+    - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       
     - name: Checkout
       uses: actions/checkout@v2
@@ -45,6 +44,5 @@ jobs:
         working-directory: i-like-this-page-backend
         
     steps:
-    - name: workflow job test 2
-      run: echo BACKEND CD START
+    - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       
