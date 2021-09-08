@@ -18,11 +18,11 @@ jobs:
         working-directory: i-like-this-page-backend
 
     steps:
-    - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      
     - name: Checkout
       uses: actions/checkout@v2
       
+    - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+    
     - name: Set up JDK 8
       uses: actions/setup-java@v2
       with:
@@ -37,12 +37,14 @@ jobs:
       run: ./gradlew clean build
       
   backend_cd:
-
+    needs: backend_ci
+    
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: i-like-this-page-backend
         
     steps:
-    - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+    - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+    
+    - name: List files in the repository
+      run: |
+        ls ${{ github.workspace }}
       
