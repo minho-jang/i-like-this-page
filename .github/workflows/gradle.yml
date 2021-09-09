@@ -10,7 +10,7 @@ on:
     branches: [ develop ]
 
 jobs:
-  backend_ci:
+  backend_cicd:
 
     runs-on: ubuntu-latest
     defaults:
@@ -27,24 +27,12 @@ jobs:
         java-version: '8'
         distribution: 'adopt'
         cache: gradle
-        
+    
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
     - name: Test and Build with Gradle
       run: ./gradlew clean build
-      
-  backend_cd:
-    needs: backend_ci
-    
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: i-like-this-page-backend
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
     
     - name: Zip entire project directory
       run: zip -r iltp-backend *
