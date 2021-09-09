@@ -41,7 +41,7 @@ jobs:
         
     steps:
     - run: echo $PWD
-    - run: echo ${ls)
+    - run: ls > ls.txt && cat ls.txt && rm ls.txt
     
     - name: Zip entire project directory
       run: zip -r iltp-backend *
