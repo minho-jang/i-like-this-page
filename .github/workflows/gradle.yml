@@ -43,7 +43,7 @@ jobs:
     - run: echo $PWD
     
     - name: Zip entire project directory
-      run: zip -r iltp-backend *
+      run: zip -r iltp-backend ./*
     
     - name: Make Directory for deploy
       run: mkdir deploy
