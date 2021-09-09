@@ -38,10 +38,13 @@ jobs:
     needs: backend_ci
     
     runs-on: ubuntu-latest
-        
+    defaults:
+      run:
+        working-directory: i-like-this-page-backend
+
     steps:
-    - run: echo $PWD
-    - run: ls > ls.txt && cat ls.txt && rm ls.txt
+    - name: Checkout
+      uses: actions/checkout@v2
     
     - name: Zip entire project directory
       run: zip -r iltp-backend *
