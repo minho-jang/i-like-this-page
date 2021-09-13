@@ -51,4 +51,4 @@ jobs:
         aws s3 cp \
         --region ap-northeast-2 \
         --acl private \
-        ./iltp-backend.zip s3://iltp-deploy-bucket/
+        deploy/iltp-backend.zip s3://iltp-deploy-bucket/
