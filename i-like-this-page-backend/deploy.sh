@@ -22,7 +22,7 @@ echo "> Copy jar files"
 
 cp $REPOSITORY/deploy/build/libs/*.jar $REPOSITORY/jar/
 
-JAR_NAME=$(ls $REPOSITORY/jar/ | grep 'i-like-this-page' | tail -n 1)
+JAR_NAME=$(ls -tr $REPOSITORY/jar/ | grep 'i-like-this-page' | tail -n 1)
 
 echo "> JAR Name: $JAR_NAME"
 
