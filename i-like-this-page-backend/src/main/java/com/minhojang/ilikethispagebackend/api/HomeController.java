@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomeController {
 
 	@GetMapping("/version")
-	public ApiResult<String> helloWorld(LikeRequest param) {
+	public ApiResult<String> helloWorld() {
 		return ApiResult.success(
 				"I LIKE THIS PAGE - 0.0.1v"
 		);
