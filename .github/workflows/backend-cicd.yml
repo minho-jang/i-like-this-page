@@ -44,12 +44,6 @@ jobs:
     
     - name: Zip entire project directory
       run: zip -r iltp-backend *
-    
-    - name: Make Directory for deploy
-      run: mkdir deploy
-  
-    - name: Move zipped project to deploy directory
-      run: mv iltp-backend.zip deploy/iltp-backend.zip
 
     - name: Deliver to AWS S3
       env:
@@ -59,7 +53,7 @@ jobs:
         aws s3 cp \
         --region ap-northeast-2 \
         --acl private \
-        deploy/iltp-backend.zip s3://iltp-deploy-bucket/
+        iltp-backend.zip s3://iltp-deploy-bucket/
         
     - name: Deploy
       env:        
