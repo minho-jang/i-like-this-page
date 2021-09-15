@@ -5,8 +5,12 @@ plugins {
 }
 
 group = 'com.minho-jang'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 sourceCompatibility = '1.8'
+
+springBoot {
+    buildInfo()
+}
 
 repositories {
     mavenCentral()
@@ -25,4 +29,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+jar {
+    enabled = false
 }
