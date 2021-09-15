@@ -6,8 +6,6 @@ name: backend CI/CD
 on:
   push:
     branches: [ develop ]
-  pull_request:
-    branches: [ develop ]
 
 jobs:
   backend_cicd:
@@ -27,7 +25,7 @@ jobs:
         java-version: '8'
         distribution: 'adopt'
         cache: gradle
-    
+
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
