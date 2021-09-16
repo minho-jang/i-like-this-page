@@ -17,7 +17,7 @@ public class InfoRestController {
 	@GetMapping("/version")
 	public ApiResult<String> version() {
 		return ApiResult.success(
-				"I LIKE THIS PAGE - " + buildProperties.getVersion()
+				"The version of i-like-this-page is " + buildProperties.getVersion()
 		);
 	}
 }
