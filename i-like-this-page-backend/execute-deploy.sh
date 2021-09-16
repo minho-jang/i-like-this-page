@@ -1,3 +1,5 @@
 #!/bin/bash
 
-deploy.sh > /dev/null 2> /dev/null < /dev/null &
+touch deploy.log
+
+deploy.sh > deploy.logl 2> deploy.log < /dev/null &
