@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 @Slf4j
-public class HomeController {
+public class InfoRestController {
 	@Autowired
 	private BuildProperties buildProperties;
 
