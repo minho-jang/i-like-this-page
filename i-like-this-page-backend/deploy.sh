@@ -2,6 +2,8 @@
 
 echo "> Checking pid of the running application..."
 
+APP_BASE_PATH=/home/ubuntu/app/
+
 CURRENT_PID=$(pgrep -f i-like-this-page)
 
 echo "PID = $CURRENT_PID"
@@ -18,10 +20,10 @@ echo "> Deploying a new application..."
 
 echo "> Copy jar files"
 
-cp build/libs/*.jar ../jar/
+cp $APP_BASE_PATH/deploy/build/libs/*.jar $APP_BASE_PATH/jar/
 
-JAR_NAME=$(ls -tr ../jar/ | grep 'i-like-this-page' | tail -n 1)
+JAR_NAME=$(ls -tr $APP_BASE_PATH/jar/ | grep 'i-like-this-page' | tail -n 1)
 
 echo "> JAR Name: $JAR_NAME"
 
-nohup java -jar ../jar/$JAR_NAME &
+nohup java -jar $APP_BASE_PATH/jar/$JAR_NAME &
