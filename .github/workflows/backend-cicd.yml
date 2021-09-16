@@ -5,7 +5,7 @@ name: backend CI/CD
 
 on:
   push:
-    branches: [ develop, release-test ]
+    branches: [ develop ]
 
 jobs:
   backend_cicd:
