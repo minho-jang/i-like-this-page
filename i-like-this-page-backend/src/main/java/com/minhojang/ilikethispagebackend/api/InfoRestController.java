@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 @Slf4j
-public class HomeController {
+public class InfoRestController {
 	@Autowired
 	private BuildProperties buildProperties;
 
 	@GetMapping("/version")
 	public ApiResult<String> version() {
 		return ApiResult.success(
-				"I LIKE THIS PAGE - " + buildProperties.getVersion()
+				"The version of i-like-this-page is " + buildProperties.getVersion()
 		);
 	}
 }
