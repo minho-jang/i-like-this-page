@@ -2,4 +2,4 @@
 
 touch deploy.log
 
-deploy.sh > deploy.logl 2> deploy.log < /dev/null &
+/home/ubuntu/deploy.sh > deploy.logl 2> deploy.log < /dev/null &
