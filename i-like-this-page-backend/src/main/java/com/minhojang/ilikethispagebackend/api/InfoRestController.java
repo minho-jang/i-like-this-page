@@ -20,4 +20,9 @@ public class InfoRestController {
 				"The version of i-like-this-page is " + buildProperties.getVersion()
 		);
 	}
+
+	@GetMapping("/github")
+	public ApiResult<String> github() {
+		return ApiResult.success("https://github.com/minho-jang/i-like-this-page");
+	}
 }
