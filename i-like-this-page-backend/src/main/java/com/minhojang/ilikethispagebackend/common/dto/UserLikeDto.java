@@ -1,13 +1,13 @@
-package com.minhojang.ilikethispagebackend.api;
+package com.minhojang.ilikethispagebackend.common.dto;
 
 import lombok.Getter;
 
 @Getter
-public class UserLikeVo {
+public class UserLikeDto {
 	private final long likeCount;
 	private final boolean isUrlLike;
 
-	public UserLikeVo(long likeCount, boolean isUrlLike) {
+	public UserLikeDto(long likeCount, boolean isUrlLike) {
 		this.likeCount = likeCount;
 		this.isUrlLike = isUrlLike;
 	}

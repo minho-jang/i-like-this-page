@@ -1,10 +1,12 @@
-package com.minhojang.ilikethispagebackend.configures;
+package com.minhojang.ilikethispagebackend.configure;
 
-import com.minhojang.ilikethispagebackend.errors.InvalidArgumentException;
-import com.minhojang.ilikethispagebackend.errors.UnsupportedMethodException;
-import com.minhojang.ilikethispagebackend.utils.IOUtils;
-import com.minhojang.ilikethispagebackend.utils.JsonUtils;
-import com.minhojang.ilikethispagebackend.utils.StringUtils;
+import com.minhojang.ilikethispagebackend.common.util.IOUtils;
+import com.minhojang.ilikethispagebackend.common.util.JsonUtils;
+import com.minhojang.ilikethispagebackend.common.util.StringUtils;
+import com.minhojang.ilikethispagebackend.common.dto.Client;
+import com.minhojang.ilikethispagebackend.common.dto.LikeRequestDto;
+import com.minhojang.ilikethispagebackend.exception.InvalidArgumentException;
+import com.minhojang.ilikethispagebackend.exception.UnsupportedMethodException;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -48,7 +50,7 @@ public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodAr
 		return createLikeRequest(webRequest);
 	}
 
-	private LikeRequest createLikeRequest(NativeWebRequest webRequest) {
+	private LikeRequestDto createLikeRequest(NativeWebRequest webRequest) {
 		Optional<HttpServletRequest> webRequestNullable =
 				Optional.ofNullable(webRequest.getNativeRequest(HttpServletRequest.class));
 		HttpServletRequest servletRequest =
@@ -60,7 +62,7 @@ public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodAr
 		throwExceptionIfStringEmpty(clientIp, "Client IP cannot be empty.");
 		throwExceptionIfStringEmpty(url, "URL cannot be empty.");
 
-		return new LikeRequest(clientIp, url);
+		return new LikeRequestDto(clientIp, url);
 	}
 
 	private String getClientIpFromRequest(HttpServletRequest req) {
@@ -96,10 +98,9 @@ public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodAr
 		String url = "";
 		try {
 			ServletInputStream input = servletRequest.getInputStream();
-			String body = IOUtils.toString(input, StandardCharsets.UTF_8);
+			String body = IOUtils.inputStreamToString(input, StandardCharsets.UTF_8);
 			if (StringUtils.isNotEmpty(body)) {
 				Map<String, Object> map = JsonUtils.jsonStringToMap(body);
-				;
 				url = (String) map.get("url");
 			}
 

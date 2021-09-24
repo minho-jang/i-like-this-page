@@ -1,8 +1,8 @@
-package com.minhojang.ilikethispagebackend.services;
+package com.minhojang.ilikethispagebackend.service;
 
-import com.minhojang.ilikethispagebackend.api.UserLikeVo;
-import com.minhojang.ilikethispagebackend.models.Like;
-import com.minhojang.ilikethispagebackend.repositories.LikeRepository;
+import com.minhojang.ilikethispagebackend.common.dto.UserLikeDto;
+import com.minhojang.ilikethispagebackend.entity.Like;
+import com.minhojang.ilikethispagebackend.repository.LikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,18 +24,18 @@ public class LikeService {
 		return result.size() > 0;
 	}
 
-	public UserLikeVo getLike(String url, String ipAddress) {
-		return new UserLikeVo(countLikeOf(url), isLikeUrl(url, ipAddress));
+	public UserLikeDto getLike(String url, String ipAddress) {
+		return new UserLikeDto(countLikeOf(url), isLikeUrl(url, ipAddress));
 	}
 
 	@Transactional
-	public UserLikeVo saveLike(String url, String ipAddress) {
+	public UserLikeDto saveLike(String url, String ipAddress) {
 		likeRepository.save(new Like(null, ipAddress, url, null));
 		return getLike(url, ipAddress);
 	}
 
 	@Transactional
-	public UserLikeVo deleteLike(String url, String ipAddress) {
+	public UserLikeDto deleteLike(String url, String ipAddress) {
 		likeRepository.deleteByUrlAndIpAddress(url, ipAddress);
 		return getLike(url, ipAddress);
 	}

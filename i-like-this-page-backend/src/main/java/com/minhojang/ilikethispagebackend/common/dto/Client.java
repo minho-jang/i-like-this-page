@@ -1,4 +1,4 @@
-package com.minhojang.ilikethispagebackend.configures;
+package com.minhojang.ilikethispagebackend.common.dto;
 
 public interface Client {
 

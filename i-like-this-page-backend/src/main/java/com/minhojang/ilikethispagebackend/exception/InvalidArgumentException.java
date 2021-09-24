@@ -1,4 +1,4 @@
-package com.minhojang.ilikethispagebackend.errors;
+package com.minhojang.ilikethispagebackend.exception;
 
 public class InvalidArgumentException extends RuntimeException {
 

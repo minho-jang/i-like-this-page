@@ -1,6 +1,6 @@
-package com.minhojang.ilikethispagebackend.repositories;
+package com.minhojang.ilikethispagebackend.repository;
 
-import com.minhojang.ilikethispagebackend.models.Like;
+import com.minhojang.ilikethispagebackend.entity.Like;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
