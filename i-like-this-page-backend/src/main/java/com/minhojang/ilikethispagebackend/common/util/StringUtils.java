@@ -1,4 +1,4 @@
-package com.minhojang.ilikethispagebackend.utils;
+package com.minhojang.ilikethispagebackend.common.util;
 
 public class StringUtils {
 

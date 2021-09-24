@@ -1,15 +1,14 @@
-package com.minhojang.ilikethispagebackend.utils;
+package com.minhojang.ilikethispagebackend.common.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.minhojang.ilikethispagebackend.exceptions.JsonException;
+import com.minhojang.ilikethispagebackend.exception.JsonException;
 
 import java.util.Map;
 
 public class JsonUtils {
 
-	static final TypeReference<Map<String, Object>> typeOfMap = new TypeReference<Map<String, Object>>() {
-	};
+	static final TypeReference<Map<String, Object>> typeOfMap = new TypeReference<Map<String, Object>>() {};
 	private static final ObjectMapper om = new ObjectMapper();
 
 	public static <T> T jsonStringToObject(String json, Class<T> type) {

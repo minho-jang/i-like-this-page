@@ -1,8 +1,8 @@
 package com.minhojang.ilikethispagebackend;
 
-import com.minhojang.ilikethispagebackend.models.Like;
-import com.minhojang.ilikethispagebackend.repositories.LikeRepository;
-import com.minhojang.ilikethispagebackend.services.LikeService;
+import com.minhojang.ilikethispagebackend.entity.Like;
+import com.minhojang.ilikethispagebackend.repository.LikeRepository;
+import com.minhojang.ilikethispagebackend.service.LikeService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

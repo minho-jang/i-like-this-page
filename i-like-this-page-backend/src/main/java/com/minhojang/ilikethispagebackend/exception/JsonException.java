@@ -1,4 +1,4 @@
-package com.minhojang.ilikethispagebackend.exceptions;
+package com.minhojang.ilikethispagebackend.exception;
 
 public class JsonException extends RuntimeException {
 

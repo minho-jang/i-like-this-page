@@ -1,7 +1,8 @@
 package com.minhojang.ilikethispagebackend.api;
 
-import com.minhojang.ilikethispagebackend.configures.LikeRequest;
-import com.minhojang.ilikethispagebackend.services.LikeService;
+import com.minhojang.ilikethispagebackend.common.dto.UserLikeDto;
+import com.minhojang.ilikethispagebackend.common.dto.LikeRequestDto;
+import com.minhojang.ilikethispagebackend.service.LikeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class MainRestController {
 	LikeService likeService;
 
 	@GetMapping("/like")
-	public ApiResult<UserLikeVo> getLike(LikeRequest param) {
+	public ApiResult<UserLikeDto> getLike(LikeRequestDto param) {
 		log.info("Get 'like' count of url and Get 'like' status of user with this ip address: " + param);
 		return ApiResult.success(
 				likeService.getLike(param.getUrl(), param.getClientIp())
@@ -24,7 +25,7 @@ public class MainRestController {
 	}
 
 	@PostMapping("/like")
-	public ApiResult<UserLikeVo> setLike(LikeRequest param) {
+	public ApiResult<UserLikeDto> setLike(LikeRequestDto param) {
 		log.info("Add 'like' to this url for this ip address: " + param);
 		return ApiResult.success(
 				likeService.saveLike(param.getUrl(), param.getClientIp())
@@ -32,7 +33,7 @@ public class MainRestController {
 	}
 
 	@DeleteMapping("/like")
-	public ApiResult<UserLikeVo> subtractLike(LikeRequest param) {
+	public ApiResult<UserLikeDto> subtractLike(LikeRequestDto param) {
 		log.info("Cancel 'like' to this url for this ip address: " + param);
 		return ApiResult.success(
 				likeService.deleteLike(param.getUrl(), param.getClientIp())

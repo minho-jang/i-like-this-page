@@ -1,4 +1,4 @@
-package com.minhojang.ilikethispagebackend.utils;
+package com.minhojang.ilikethispagebackend.common.util;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class IOUtils {
 
-	public static String toString(InputStream input, Charset charset) {
+	public static String inputStreamToString(InputStream input, Charset charset) {
 		return new BufferedReader(new InputStreamReader(input, charset))
 				.lines()
 				.collect(Collectors.joining("\n"));

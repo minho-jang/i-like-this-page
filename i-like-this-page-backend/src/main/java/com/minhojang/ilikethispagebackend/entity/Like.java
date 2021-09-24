@@ -1,4 +1,4 @@
-package com.minhojang.ilikethispagebackend.models;
+package com.minhojang.ilikethispagebackend.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

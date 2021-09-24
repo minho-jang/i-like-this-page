@@ -1,10 +1,10 @@
-package com.minhojang.ilikethispagebackend.configures;
+package com.minhojang.ilikethispagebackend.configure;
 
 import com.minhojang.ilikethispagebackend.api.ApiResult;
-import com.minhojang.ilikethispagebackend.exceptions.InvalidArgumentException;
-import com.minhojang.ilikethispagebackend.exceptions.JsonException;
-import com.minhojang.ilikethispagebackend.exceptions.NotFoundException;
-import com.minhojang.ilikethispagebackend.exceptions.UnsupportedMethodException;
+import com.minhojang.ilikethispagebackend.exception.InvalidArgumentException;
+import com.minhojang.ilikethispagebackend.exception.JsonException;
+import com.minhojang.ilikethispagebackend.exception.NotFoundException;
+import com.minhojang.ilikethispagebackend.exception.UnsupportedMethodException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
