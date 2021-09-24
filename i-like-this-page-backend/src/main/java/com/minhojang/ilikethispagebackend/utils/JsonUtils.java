@@ -2,7 +2,7 @@ package com.minhojang.ilikethispagebackend.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.minhojang.ilikethispagebackend.errors.JsonException;
+import com.minhojang.ilikethispagebackend.exceptions.JsonException;
 
 import java.util.Map;
 

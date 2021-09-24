@@ -1,7 +1,7 @@
 package com.minhojang.ilikethispagebackend.configures;
 
-import com.minhojang.ilikethispagebackend.errors.InvalidArgumentException;
-import com.minhojang.ilikethispagebackend.errors.UnsupportedMethodException;
+import com.minhojang.ilikethispagebackend.exceptions.InvalidArgumentException;
+import com.minhojang.ilikethispagebackend.exceptions.UnsupportedMethodException;
 import com.minhojang.ilikethispagebackend.utils.IOUtils;
 import com.minhojang.ilikethispagebackend.utils.JsonUtils;
 import com.minhojang.ilikethispagebackend.utils.StringUtils;
@@ -99,7 +99,6 @@ public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodAr
 			String body = IOUtils.toString(input, StandardCharsets.UTF_8);
 			if (StringUtils.isNotEmpty(body)) {
 				Map<String, Object> map = JsonUtils.jsonStringToMap(body);
-				;
 				url = (String) map.get("url");
 			}
 
