@@ -35,3 +35,7 @@ export const deleteLike = (currentLocation) => {
   return fetch(deleteLikeUrl, options).then((response) => response.json());
 };
 
+export const checkToken = () => {
+  const checkTokenUrl = `${RESTAPI_BASEADDRESS}/check`;
+  return fetch(checkTokenUrl).then((response) => response.json());
+}

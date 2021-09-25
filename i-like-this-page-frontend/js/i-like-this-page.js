@@ -1,4 +1,4 @@
-import { getLike, deleteLike, addLike } from "./api.js";
+import { getLike, deleteLike, addLike, checkToken } from "./api.js";
 
 const likeBackgroundColor = "rgb(255, 202, 202)";
 const errorBackgroundColor = "rgb(214, 214, 214)";
@@ -114,7 +114,21 @@ const handleError = (err) => {
   renderButton(false);
 };
 
+const checkMe = () => {
+  checkToken()
+    .then((data) => {
+      console.log(data);
+      if (!data.success) {
+        handleError(data.error);
+        return;
+      }
+    })
+    .catch((err) => handleError(err));
+}
+
 renderButton(true);
+
+checkMe();
 
 window.addEventListener("load", () => {
   const currentLocation = window.location.host + window.location.pathname;
