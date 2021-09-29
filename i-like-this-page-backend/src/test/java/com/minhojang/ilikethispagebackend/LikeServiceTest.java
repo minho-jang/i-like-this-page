@@ -21,23 +21,23 @@ public class LikeServiceTest {
 	@Autowired
 	private LikeRepository likeRepository;
 
-	@DisplayName("해당 URL과 IP주소와 함께 좋아요를 저장한다.")
+	@DisplayName("해당 URL과 UUID로 '좋아요'를 저장한다")
 	@Test
 	public void saveLike() {
 		// given
 		String url = "127.0.0.1:5500/i-like-this-page-frontend/prototype.html";
-		String ipAddress = "0:0:0:0:0:0:0:1";
+		String uuid = "uuid-for-test";
 
 		// when
-		likeService.saveLike(url, ipAddress);
+		likeService.saveLike(url, uuid);
 
 		// then
 		Like like = likeRepository.findAll().get(0);
 		assertEquals(like.getUrl(), url);
-		assertEquals(like.getIpAddress(), ipAddress);
+		assertEquals(like.getUuid(), uuid);
 	}
 
-	@DisplayName("해당 URL에 대한 좋아요를 개수를 센다.")
+	@DisplayName("해당 URL에 대한 좋아요를 개수를 센다")
 	@Test
 	public void getTheNumberOfLikesOfUrl() {
 		// given
@@ -50,16 +50,16 @@ public class LikeServiceTest {
 		assertEquals(1, result);
 	}
 
-	@DisplayName("해당 URL과 IP주소를 가지는 좋아요를 삭제한다.")
+	@DisplayName("해당 URL과 UUID에 대한 '좋아요'를 삭제한다")
 	@Test
 	public void deleteLikeOfUrl() {
 		// given
 		String url = "127.0.0.1:5500/i-like-this-page-frontend/prototype.html";
-		String ipAddress = "0:0:0:0:0:0:0:1";
-		assertTrue(likeService.isLikeUrl(url, ipAddress));
+		String uuid = "uuid-for-test";
+		assertTrue(likeService.getLikeStatus(url, uuid));
 
 		// when
-		likeService.deleteLike(url, ipAddress);
+		likeService.deleteLike(url, uuid);
 
 		// then
 		assertTrue(likeRepository.findAll().isEmpty());

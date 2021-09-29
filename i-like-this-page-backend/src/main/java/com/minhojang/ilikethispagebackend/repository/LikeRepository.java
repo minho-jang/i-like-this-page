@@ -11,8 +11,8 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 
 	long countByUrl(String url);
 
-	List<Like> findByUrlAndIpAddress(String url, String ipAddress);
+	List<Like> findByUrlAndUuid(String url, String uuid);
 
-	void deleteByUrlAndIpAddress(String url, String ipAddress);
+	void deleteByUrlAndUuid(String url, String uuid);
 
 }

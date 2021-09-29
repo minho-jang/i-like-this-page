@@ -21,8 +21,8 @@ public class Like {
 	@GeneratedValue
 	private Long likeId;
 
-	@Column(name = "ip_address")
-	private String ipAddress;
+	@Column(name = "uuid")
+	private String uuid;
 
 	@Column(name = "url")
 	private String url;
