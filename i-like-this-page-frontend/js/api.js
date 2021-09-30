@@ -1,4 +1,4 @@
-const DOMAIN = "http://3.36.69.100:8080";
+const DOMAIN = "https://iltp.link";
 const RESTAPI_BASEADDRESS = `${DOMAIN}/api/v1`;
 
 export const getLike = (currentLocation) => {
