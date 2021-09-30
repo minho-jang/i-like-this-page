@@ -9,7 +9,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "build": "./node_modules/webpack/bin/webpack.js ./js/i-like-this-page.js --output-filename=bundle.min.js --mode=production"
+    "build": "./node_modules/webpack/bin/webpack.js ./js/i-like-this-page.js --output-filename=iltp.bundle.min.js --mode=production"
   },
   "keywords": [],
   "author": "",
