@@ -1,4 +1,4 @@
-import { getLike, deleteLike, addLike } from "./api.js";
+import { getLike, deleteLike, addLike, checkToken } from "./api.js";
 
 const likeBackgroundColor = "rgb(255, 202, 202)";
 const errorBackgroundColor = "rgb(214, 214, 214)";
@@ -71,7 +71,7 @@ const getLikeAndRender = (currentLocation) => {
       }
 
       console.log(data);
-      userLikeStatus = data.response.urlLike;
+      userLikeStatus = data.response.likeStatus;
       document.getElementById("iltp-content-number").innerHTML =
         data.response.likeCount;
     })
@@ -87,7 +87,7 @@ const addLikeAndRender = (currentLocation) => {
         return;
       }
 
-      userLikeStatus = data.response.urlLike;
+      userLikeStatus = data.response.likeStatus;
       document.getElementById("iltp-content-number").innerText =
         data.response.likeCount;
     })
@@ -103,9 +103,8 @@ const cancelLikeAndRender = (currentLocation) => {
         return;
       }
 
-      userLikeStatus = data.response.urlLike;
-      document.getElementById("iltp-content-number").innerText =
-        data.response.likeCount;
+      userLikeStatus = data.response.likeStatus;
+      document.getElementById("iltp-content-number").innerText = data.response.likeCount;
     })
     .catch((err) => handleError(err));
 }

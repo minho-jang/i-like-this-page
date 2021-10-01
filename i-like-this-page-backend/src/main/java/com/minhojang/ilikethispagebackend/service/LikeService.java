@@ -1,6 +1,6 @@
 package com.minhojang.ilikethispagebackend.service;
 
-import com.minhojang.ilikethispagebackend.common.dto.UserLikeDto;
+import com.minhojang.ilikethispagebackend.common.dto.LikeResponseDto;
 import com.minhojang.ilikethispagebackend.entity.Like;
 import com.minhojang.ilikethispagebackend.repository.LikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,24 +19,29 @@ public class LikeService {
 		return likeRepository.countByUrl(url);
 	}
 
-	public Boolean isLikeUrl(String url, String ipAddress) {
-		List<Like> result = likeRepository.findByUrlAndIpAddress(url, ipAddress);
+	public boolean getLikeStatus(String url, String uuid) {
+		List<Like> result = likeRepository.findByUrlAndUuid(url, uuid);
 		return result.size() > 0;
 	}
 
-	public UserLikeDto getLike(String url, String ipAddress) {
-		return new UserLikeDto(countLikeOf(url), isLikeUrl(url, ipAddress));
+	public LikeResponseDto getLike(String url, String uuid) {
+		return LikeResponseDto.builder()
+				.url(url)
+				.uuid(uuid)
+				.likeCount(countLikeOf((url)))
+				.likeStatus(getLikeStatus(url, uuid))
+				.build();
 	}
 
 	@Transactional
-	public UserLikeDto saveLike(String url, String ipAddress) {
-		likeRepository.save(new Like(null, ipAddress, url, null));
-		return getLike(url, ipAddress);
+	public LikeResponseDto saveLike(String url, String uuid) {
+		likeRepository.save(new Like(null, uuid, url, null));
+		return getLike(url, uuid);
 	}
 
 	@Transactional
-	public UserLikeDto deleteLike(String url, String ipAddress) {
-		likeRepository.deleteByUrlAndIpAddress(url, ipAddress);
-		return getLike(url, ipAddress);
+	public LikeResponseDto deleteLike(String url, String uuid) {
+		likeRepository.deleteByUrlAndUuid(url, uuid);
+		return getLike(url, uuid);
 	}
 }

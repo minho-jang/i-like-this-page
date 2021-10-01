@@ -5,14 +5,14 @@ import lombok.ToString;
 
 @ToString
 @Getter
-public class LikeRequestDto implements Client {
+public class LikeRequestDto {
 
-	private final String clientIp;
 	private final String url;
+	private final String uuid;
 
-	public LikeRequestDto(String clientIp, String url) {
-		this.clientIp = clientIp;
+	public LikeRequestDto(String uuid, String url) {
 		this.url = url;
+		this.uuid = uuid;
 	}
 
 }
