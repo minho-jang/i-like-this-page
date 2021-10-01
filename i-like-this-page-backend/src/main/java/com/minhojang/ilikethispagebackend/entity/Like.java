@@ -5,10 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
@@ -18,13 +15,13 @@ import java.time.LocalDateTime;
 public class Like {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long likeId;
 
-	@Column(name = "uuid")
+	@Column(name = "uuid", length = 400)
 	private String uuid;
 
-	@Column(name = "url")
+	@Column(name = "url", length = 2100)
 	private String url;
 
 	@CreationTimestamp

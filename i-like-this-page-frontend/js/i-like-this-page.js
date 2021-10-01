@@ -70,7 +70,7 @@ const getLikeAndRender = (currentLocation) => {
       }
 
       console.log(data);
-      userLikeStatus = data.response.urlLike;
+      userLikeStatus = data.response.likeStatus;
       document.getElementById("iltp-content-number").innerHTML =
         data.response.likeCount;
     })
@@ -86,7 +86,7 @@ const addLikeAndRender = (currentLocation) => {
         return;
       }
 
-      userLikeStatus = data.response.urlLike;
+      userLikeStatus = data.response.likeStatus;
       document.getElementById("iltp-content-number").innerText =
         data.response.likeCount;
     })
@@ -102,9 +102,8 @@ const cancelLikeAndRender = (currentLocation) => {
         return;
       }
 
-      userLikeStatus = data.response.urlLike;
-      document.getElementById("iltp-content-number").innerText =
-        data.response.likeCount;
+      userLikeStatus = data.response.likeStatus;
+      document.getElementById("iltp-content-number").innerText = data.response.likeCount;
     })
     .catch((err) => handleError(err));
 }
@@ -114,21 +113,7 @@ const handleError = (err) => {
   renderButton(false);
 };
 
-const checkMe = () => {
-  checkToken()
-    .then((data) => {
-      console.log(data);
-      if (!data.success) {
-        handleError(data.error);
-        return;
-      }
-    })
-    .catch((err) => handleError(err));
-}
-
 renderButton(true);
-
-checkMe();
 
 window.addEventListener("load", () => {
   const currentLocation = window.location.host + window.location.pathname;

@@ -6,7 +6,10 @@ import com.minhojang.ilikethispagebackend.common.util.StringUtils;
 import com.minhojang.ilikethispagebackend.common.dto.LikeRequestDto;
 import com.minhojang.ilikethispagebackend.exception.InvalidArgumentException;
 import com.minhojang.ilikethispagebackend.exception.UnsupportedMethodException;
+import com.minhojang.ilikethispagebackend.service.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -18,9 +21,12 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
+
+	@Autowired
+	TokenService tokenService;
+
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		return LikeRequestDto.class.isAssignableFrom(parameter.getParameterType());
@@ -52,7 +58,24 @@ public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodAr
 	}
 
 	private String getUuidFromRequest(HttpServletRequest servletRequest) {
-		return UUID.randomUUID().toString();	// TODO: authorization header 에서 jwt 읽어오기
+		String authHeader = servletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+
+		verifyAuthorizationHeader(authHeader);
+		String token = extractTokenFromAuthorizationHeader(authHeader);
+
+		return tokenService.getUuidFromToken(token);
+	}
+
+	private static final String JWT_AUTH_PREFIX = "Bearer ";
+
+	private String extractTokenFromAuthorizationHeader(String authHeader) {
+		return authHeader.substring(JWT_AUTH_PREFIX.length());
+	}
+
+	private void verifyAuthorizationHeader(String authHeader) {
+		if (StringUtils.isEmpty(authHeader) || !authHeader.startsWith(JWT_AUTH_PREFIX)) {
+			throw new IllegalArgumentException("Invalid string in Authorization header.");
+		}
 	}
 
 	private String getUrlFromRequest(HttpServletRequest servletRequest) {
@@ -73,20 +96,19 @@ public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodAr
 	}
 
 	private String getUrlFromPostRequest(HttpServletRequest servletRequest) {
-		String url = "";
 		try {
+			String url = "";
 			ServletInputStream input = servletRequest.getInputStream();
 			String body = IOUtils.inputStreamToString(input, StandardCharsets.UTF_8);
 			if (StringUtils.isNotEmpty(body)) {
 				Map<String, Object> map = JsonUtils.jsonStringToMap(body);
 				url = (String) map.get("url");
 			}
+			return url;
 
 		} catch (IOException e) {
 			throw new RuntimeException("Error reading request body.");
 		}
-
-		return url;
 	}
 
 	private void throwExceptionIfStringEmpty(String str, String errorMessage) {

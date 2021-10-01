@@ -5,6 +5,10 @@ import com.minhojang.ilikethispagebackend.exception.InvalidArgumentException;
 import com.minhojang.ilikethispagebackend.exception.JsonException;
 import com.minhojang.ilikethispagebackend.exception.NotFoundException;
 import com.minhojang.ilikethispagebackend.exception.UnsupportedMethodException;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -40,6 +44,16 @@ public class GlobalControllerExceptionHandler {
 	@ExceptionHandler(NotFoundException.class)
 	public ResponseEntity<?> handleNotFoundException(Exception e) {
 		return newResponse(e, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler({
+			SignatureException.class,
+			ExpiredJwtException.class,
+			UnsupportedJwtException.class,
+			MalformedJwtException.class
+	})
+	public ResponseEntity<?> handleJwtException(Exception e) {
+		return newResponse(e, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler({
