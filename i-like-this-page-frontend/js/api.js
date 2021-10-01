@@ -1,4 +1,4 @@
-const DOMAIN = "http://localhost:8080";
+const DOMAIN = "http://iltp.link";
 const RESTAPI_BASEADDRESS = `${DOMAIN}/api/v1`;
 
 const AUTHORIZATION_PREFIX = "Bearer ";

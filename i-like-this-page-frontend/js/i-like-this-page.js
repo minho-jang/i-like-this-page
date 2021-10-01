@@ -46,6 +46,7 @@ const removeLikeButtonIfExisted = () => {
 let userLikeStatus = false;
 const iltpContainer = document.getElementById("i-like-this-page");
 const iltpContainerStyle = `
+  display: inline-block;
   cursor: pointer;
 `;
 iltpContainer.setAttribute("style", iltpContainerStyle);
