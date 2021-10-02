@@ -1,4 +1,5 @@
-import { getLike, deleteLike, addLike, checkToken } from "./api.js";
+import { getLike, deleteLike, addLike } from "./api.js";
+import "../css/i-like-this-page.css";
 
 const likeBackgroundColor = "rgb(255, 202, 202)";
 const errorBackgroundColor = "rgb(214, 214, 214)";
@@ -29,12 +30,6 @@ const renderButton = (likeOrError) => {
 
   removeLikeButtonIfExisted();
   iltpContainer.appendChild(iltpBox);
-
-  const cssLinkElement = document.createElement("link");
-  cssLinkElement.setAttribute("href", "css/i-like-this-page.css");
-  cssLinkElement.setAttribute("type", "text/css");
-  cssLinkElement.setAttribute("rel", "stylesheet");
-  document.head.appendChild(cssLinkElement);
 };
 
 const removeLikeButtonIfExisted = () => {
