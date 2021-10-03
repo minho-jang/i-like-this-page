@@ -19,13 +19,15 @@ const renderButton = (likeOrError) => {
 
   const iltpIcon = document.createElement("span");
   iltpIcon.setAttribute("id", "iltp-content-icon");
-  iltpIcon.innerText = likeOrError ? "💕" : "🖤";
+  iltpIcon.innerText = likeOrError ? "💕" : "❗️";
   iltpBox.appendChild(iltpIcon);
 
   const iltpContent = document.createElement("span");
   iltpContent.setAttribute("id", "iltp-content-number");
-  iltpContent.setAttribute("style", "margin-left: .4rem;");
-  iltpContent.innerText = likeOrError ? "0" : "ERROR";
+  if (likeOrError) {
+    iltpContent.setAttribute("style", "margin-left: .4rem;");
+    iltpContent.innerText = "0";
+  }
   iltpBox.appendChild(iltpContent);
 
   removeLikeButtonIfExisted();
@@ -43,6 +45,8 @@ const iltpContainer = document.getElementById("i-like-this-page");
 const iltpContainerStyle = `
   display: inline-block;
   cursor: pointer;
+  color: black;
+  font-size: 0.75em;
 `;
 iltpContainer.setAttribute("style", iltpContainerStyle);
 
