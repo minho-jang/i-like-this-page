@@ -50,7 +50,7 @@ const iltpContainerStyle = `
 `;
 iltpContainer.setAttribute("style", iltpContainerStyle);
 
-iltpContainer.addEventListener("click", function () {
+iltpContainer.addEventListener("click", () => {
   const urlWithoutProtocol = window.location.host + window.location.pathname;
 
   if (userLikeStatus) {
@@ -60,53 +60,53 @@ iltpContainer.addEventListener("click", function () {
   }
 });
 
-const getLikeAndRender = (currentLocation) => {
-  getLike(currentLocation)
-    .then((data) => {
-      if (!data.success) {
-        console.error(data.error.message);
-        renderErrorButtonTo(iltpContainer, data.error.status);
-        return;
-      }
+const getLikeAndRender = async (currentLocation) => {
+  try {
+    const apiResult = await getLike(currentLocation);
+    if (apiResult.error) {
+      handleError(apiResult.error);
+      return;
+    }
 
-      console.log(data);
-      userLikeStatus = data.response.likeStatus;
-      document.getElementById("iltp-content-number").innerHTML =
-        data.response.likeCount;
-    })
-    .catch((err) => handleError(err));
-}
+    userLikeStatus = apiResult.response.likeStatus;
+    document.getElementById("iltp-content-number").innerHTML =
+      apiResult.response.likeCount;
+  } catch (err) {
+    handleError(err);
+  }
+};
 
-const addLikeAndRender = (currentLocation) => {
-  addLike(currentLocation)
-    .then((data) => {
-      console.log(data);
-      if (!data.success) {
-        handleError(data.error);
-        return;
-      }
+const addLikeAndRender = async (currentLocation) => {
+  try {
+    const apiResult = await addLike(currentLocation);
+    if (apiResult.error) {
+      handleError(apiResult.error);
+      return;
+    }
 
-      userLikeStatus = data.response.likeStatus;
-      document.getElementById("iltp-content-number").innerText =
-        data.response.likeCount;
-    })
-    .catch((err) => handleError(err));
-}
+    userLikeStatus = apiResult.response.likeStatus;
+    document.getElementById("iltp-content-number").innerText =
+      apiResult.response.likeCount;
+  } catch (err) {
+    handleError(err);
+  }
+};
 
-const cancelLikeAndRender = (currentLocation) => {
-  deleteLike(currentLocation)
-    .then((data) => {
-      console.log(data);
-      if (!data.success) {
-        handleError(data.error);
-        return;
-      }
+const cancelLikeAndRender = async (currentLocation) => {
+  try {
+    const apiResult = await deleteLike(currentLocation);
+    if (apiResult.error) {
+      handleError(apiResult.error);
+      return;
+    }
 
-      userLikeStatus = data.response.likeStatus;
-      document.getElementById("iltp-content-number").innerText = data.response.likeCount;
-    })
-    .catch((err) => handleError(err));
-}
+    userLikeStatus = apiResult.response.likeStatus;
+    document.getElementById("iltp-content-number").innerText =
+      apiResult.response.likeCount;
+  } catch (err) {
+    handleError(err);
+  }
+};
 
 const handleError = (err) => {
   console.error(err);
