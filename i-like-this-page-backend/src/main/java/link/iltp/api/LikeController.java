@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/like")
 @CrossOrigin
 @Slf4j
-public class LikeRestController {
+public class LikeController {
 
 	@Autowired
 	LikeService likeService;
