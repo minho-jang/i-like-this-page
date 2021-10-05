@@ -1,32 +1,46 @@
 import { getLike, deleteLike, addLike } from "./api.js";
+import {
+  heart64x64Base64,
+  warning64x64Base64,
+  heartLine64x64Base64,
+} from "./icon.js";
 import "../css/i-like-this-page.css";
 
+const nonLikeBackgroundColor = "rgb(255 221 221)";
 const likeBackgroundColor = "rgb(255, 202, 202)";
 const errorBackgroundColor = "rgb(214, 214, 214)";
 
 const renderButton = (likeOrError) => {
-  const iltpBox = document.createElement("span");
+  const iltpBox = document.createElement("div");
   iltpBox.setAttribute("id", "iltp-box");
 
   const iltpBoxStyle = `
-    border-radius: 15%;
     background-color: ${
-      likeOrError ? likeBackgroundColor : errorBackgroundColor
+      likeOrError ? nonLikeBackgroundColor : errorBackgroundColor
     };
-    font-family: 'Fira Sans', sans-serif;
-    padding: 0.5rem 1rem;`;
+    cursor: ${likeOrError ? "pointer" : "not-allowed"};`;
+
   iltpBox.setAttribute("style", iltpBoxStyle);
 
   const iltpIcon = document.createElement("span");
   iltpIcon.setAttribute("id", "iltp-content-icon");
-  iltpIcon.innerText = likeOrError ? "💕" : "🖤";
+  const heartImage = document.createElement("img");
+  heartImage.setAttribute("id", "iltp-content-icon-img");
+  heartImage.width = 16;
+  heartImage.height = 16;
+  heartImage.src =
+    "data:image/png;base64," +
+    (likeOrError ? heartLine64x64Base64 : warning64x64Base64);
+
+  iltpIcon.appendChild(heartImage);
   iltpBox.appendChild(iltpIcon);
 
-  const iltpContent = document.createElement("span");
-  iltpContent.setAttribute("id", "iltp-content-number");
-  iltpContent.setAttribute("style", "margin-left: .4rem;");
-  iltpContent.innerText = likeOrError ? "0" : "ERROR";
-  iltpBox.appendChild(iltpContent);
+  if (likeOrError) {
+    const iltpNumber = document.createElement("span");
+    iltpNumber.setAttribute("id", "iltp-content-number");
+    iltpNumber.innerText = "0";
+    iltpBox.appendChild(iltpNumber);
+  }
 
   removeLikeButtonIfExisted();
   iltpContainer.appendChild(iltpBox);
@@ -40,69 +54,70 @@ const removeLikeButtonIfExisted = () => {
 
 let userLikeStatus = false;
 const iltpContainer = document.getElementById("i-like-this-page");
-const iltpContainerStyle = `
-  display: inline-block;
-  cursor: pointer;
-`;
-iltpContainer.setAttribute("style", iltpContainerStyle);
 
-iltpContainer.addEventListener("click", function () {
-  const urlWithoutProtocol = window.location.host + window.location.pathname;
+iltpContainer.addEventListener("click", () => {
+  const isNotError = document.getElementById("iltp-content-number");
+  if (isNotError) {
+    const urlWithoutProtocol = window.location.host + window.location.pathname;
 
-  if (userLikeStatus) {
-    cancelLikeAndRender(urlWithoutProtocol);
-  } else {
-    addLikeAndRender(urlWithoutProtocol);
+    if (userLikeStatus) {
+      cancelLikeAndRender(urlWithoutProtocol);
+    } else {
+      addLikeAndRender(urlWithoutProtocol);
+    }
   }
 });
 
-const getLikeAndRender = (currentLocation) => {
-  getLike(currentLocation)
-    .then((data) => {
-      if (!data.success) {
-        console.error(data.error.message);
-        renderErrorButtonTo(iltpContainer, data.error.status);
-        return;
-      }
+const getLikeAndRender = async (currentLocation) => {
+  try {
+    const apiResult = await getLike(currentLocation);
+    if (apiResult.error) {
+      handleError(apiResult.error);
+      return;
+    }
+    renderApiResult(apiResult);
+  } catch (err) {
+    handleError(err);
+  }
+};
 
-      console.log(data);
-      userLikeStatus = data.response.likeStatus;
-      document.getElementById("iltp-content-number").innerHTML =
-        data.response.likeCount;
-    })
-    .catch((err) => handleError(err));
-}
+const addLikeAndRender = async (currentLocation) => {
+  try {
+    const apiResult = await addLike(currentLocation);
+    if (apiResult.error) {
+      handleError(apiResult.error);
+      return;
+    }
+    renderApiResult(apiResult);
+  } catch (err) {
+    handleError(err);
+  }
+};
 
-const addLikeAndRender = (currentLocation) => {
-  addLike(currentLocation)
-    .then((data) => {
-      console.log(data);
-      if (!data.success) {
-        handleError(data.error);
-        return;
-      }
+const cancelLikeAndRender = async (currentLocation) => {
+  try {
+    const apiResult = await deleteLike(currentLocation);
+    if (apiResult.error) {
+      handleError(apiResult.error);
+      return;
+    }
+    renderApiResult(apiResult);
+  } catch (err) {
+    handleError(err);
+  }
+};
 
-      userLikeStatus = data.response.likeStatus;
-      document.getElementById("iltp-content-number").innerText =
-        data.response.likeCount;
-    })
-    .catch((err) => handleError(err));
-}
-
-const cancelLikeAndRender = (currentLocation) => {
-  deleteLike(currentLocation)
-    .then((data) => {
-      console.log(data);
-      if (!data.success) {
-        handleError(data.error);
-        return;
-      }
-
-      userLikeStatus = data.response.likeStatus;
-      document.getElementById("iltp-content-number").innerText = data.response.likeCount;
-    })
-    .catch((err) => handleError(err));
-}
+const renderApiResult = (apiResult) => {
+  userLikeStatus = apiResult.response.likeStatus;
+  document.getElementById("iltp-box").style.backgroundColor = userLikeStatus
+    ? likeBackgroundColor
+    : nonLikeBackgroundColor;
+  document.getElementById("iltp-content-icon-img").src =
+    "data:image/png;base64," +
+    (userLikeStatus ? heart64x64Base64 : heartLine64x64Base64);
+  document.getElementById("iltp-content-number").innerText =
+    apiResult.response.likeCount;
+};
 
 const handleError = (err) => {
   console.error(err);

@@ -1,17 +1,22 @@
-#iltp-box {
-  text-align: center;
-  position: relative;
+#i-like-this-page {
   display: inline-block;
-  border-radius: 15%;
-  background-color: rgb(255, 202, 202);
+  color: black;
+}
+#iltp-box {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  border-radius: 0.5em;
+  background-color: rgb(214, 214, 214);
   padding: 0.5rem 1rem;
-  font-family: 'Fira Sans', sans-serif;
+  font-family: "Fira Sans", sans-serif;
   border: none;
-  cursor: pointer;
   overflow: hidden;
+  cursor: pointer;
 }
 #iltp-box::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -29,6 +34,10 @@
   background-color: rgb(255, 78, 78, 0.1);
   -webkit-transform: scaleX(1);
   transform: scaleX(1);
-  transition: -webkit-transform 0.6s cubic-bezier(0.08, 0.35, 0.13, 1.02), opacity 0.4s;
+  transition: -webkit-transform 0.6s cubic-bezier(0.08, 0.35, 0.13, 1.02),
+    opacity 0.4s;
   transition: transform 0.6s cubic-bezier(0.08, 0.35, 0.13, 1.02), opacity;
+}
+#iltp-content-number {
+  font-size: 0.75em;
 }

@@ -1,4 +1,4 @@
-var path = require('path');
+var path = require("path");
 
 module.exports = {
   mode: "production",
@@ -20,6 +20,7 @@ module.exports = {
           loader: "babel-loader",
           options: {
             presets: ["@babel/preset-env"],
+            plugins: ["@babel/transform-runtime"],
           },
         },
       },
