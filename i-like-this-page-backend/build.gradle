@@ -20,15 +20,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.h2database:h2'
-    implementation 'org.projectlombok:lombok:1.18.20'
     compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
 
     // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
+    annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
