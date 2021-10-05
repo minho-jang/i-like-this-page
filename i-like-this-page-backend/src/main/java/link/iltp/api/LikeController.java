@@ -25,7 +25,7 @@ public class LikeController {
 	}
 
 	@PostMapping("")
-	public ApiResult<LikeResponseDto> setLike(LikeRequestDto param) {
+	public ApiResult<LikeResponseDto> addLike(LikeRequestDto param) {
 		log.info("Add 'like' to this url for this ip address: " + param);
 		return ApiResult.success(
 				likeService.saveLike(param.getUrl(), param.getUuid())
