@@ -1,11 +1,11 @@
 # Test
 spring:
   profiles:
-    active: local
+    active: test
 
 ---
 spring:
-  profiles: local
+  profiles: test
   jpa:
     show-sql: true
     hibernate:

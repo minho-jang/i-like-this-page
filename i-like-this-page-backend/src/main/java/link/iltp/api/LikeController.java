@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/like")
 @CrossOrigin
 @Slf4j
-public class LikeRestController {
+public class LikeController {
 
 	@Autowired
 	LikeService likeService;
@@ -25,7 +25,7 @@ public class LikeRestController {
 	}
 
 	@PostMapping("")
-	public ApiResult<LikeResponseDto> setLike(LikeRequestDto param) {
+	public ApiResult<LikeResponseDto> addLike(LikeRequestDto param) {
 		log.info("Add 'like' to this url for this ip address: " + param);
 		return ApiResult.success(
 				likeService.saveLike(param.getUrl(), param.getUuid())

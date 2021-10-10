@@ -16,8 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import static link.iltp.api.ApiResult.error;
-
 @ControllerAdvice
 @Slf4j
 public class GlobalControllerExceptionHandler {
@@ -35,7 +33,8 @@ public class GlobalControllerExceptionHandler {
 	@ExceptionHandler({
 			JsonException.class,
 			InvalidArgumentException.class,
-			UnsupportedMethodException.class
+			UnsupportedMethodException.class,
+			IllegalArgumentException.class
 	})
 	public ResponseEntity<?> handleBadRequestException(Exception e) {
 		return newResponse(e, HttpStatus.BAD_REQUEST);
