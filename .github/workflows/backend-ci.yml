@@ -10,45 +10,44 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: i-like-this-page-fronted
+        working-directory: i-like-this-page-frontend
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Set up JDK 11
-      - uses: actions/setup-node@v2
+      - name: Set up Node 14
+        uses: actions/setup-node@v2
         with:
           node-version: '14'
-          cache: 'npm'
 
-    - name: Install npm packages
-      run: npm install
-    
-    - name: Build frontend and Copy to backend resources
-      run: npm run deploy
+      - name: Install npm packages
+        run: npm install
+
+      - name: Build frontend and Copy to backend resources
+        run: npm run deploy
 
   backend_ci:
     needs: frontend_ci
-    
+
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: i-like-this-page-backend
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Set up JDK 11
-      uses: actions/setup-java@v2
-      with:
-        java-version: '11'
-        distribution: 'adopt'
-        cache: gradle
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-    - name: Build with Gradle
-      run: ./gradlew build
+      - name: Build with Gradle
+        run: ./gradlew build
