@@ -1,44 +1,41 @@
-import { getLike, deleteLike, addLike } from "./api.js";
-import {
-  heart64x64Base64,
-  warning64x64Base64,
-  heartLine64x64Base64,
-} from "./icon.js";
-import "../css/i-like-this-page.css";
+import '../css/i-like-this-page.css';
+import likeIcon from '../images/like-icon-64x64.png';
+import unlikeIcon from '../images/unlike-icon-64x64.png';
+import warningIcon from '../images/warning-icon-64x64.png';
 
-const nonLikeBackgroundColor = "rgb(255 221 221)";
-const likeBackgroundColor = "rgb(255, 202, 202)";
-const errorBackgroundColor = "rgb(214, 214, 214)";
+import { getLike, deleteLike, addLike } from './api.js';
+
+const nonLikeBackgroundColor = 'rgb(255 221 221)';
+const likeBackgroundColor = 'rgb(255, 202, 202)';
+const errorBackgroundColor = 'rgb(214, 214, 214)';
 
 const renderButton = (likeOrError) => {
-  const iltpBox = document.createElement("div");
-  iltpBox.setAttribute("id", "iltp-box");
+  const iltpBox = document.createElement('div');
+  iltpBox.setAttribute('id', 'iltp-box');
 
   const iltpBoxStyle = `
     background-color: ${
       likeOrError ? nonLikeBackgroundColor : errorBackgroundColor
     };
-    cursor: ${likeOrError ? "pointer" : "not-allowed"};`;
+    cursor: ${likeOrError ? 'pointer' : 'not-allowed'};`;
 
-  iltpBox.setAttribute("style", iltpBoxStyle);
+  iltpBox.setAttribute('style', iltpBoxStyle);
 
-  const iltpIcon = document.createElement("span");
-  iltpIcon.setAttribute("id", "iltp-content-icon");
-  const heartImage = document.createElement("img");
-  heartImage.setAttribute("id", "iltp-content-icon-img");
+  const iltpIcon = document.createElement('span');
+  iltpIcon.setAttribute('id', 'iltp-content-icon');
+  const heartImage = document.createElement('img');
+  heartImage.setAttribute('id', 'iltp-content-icon-img');
   heartImage.width = 16;
   heartImage.height = 16;
-  heartImage.src =
-    "data:image/png;base64," +
-    (likeOrError ? heartLine64x64Base64 : warning64x64Base64);
+  heartImage.src = likeOrError ? unlikeIcon : warningIcon;
 
   iltpIcon.appendChild(heartImage);
   iltpBox.appendChild(iltpIcon);
 
   if (likeOrError) {
-    const iltpNumber = document.createElement("span");
-    iltpNumber.setAttribute("id", "iltp-content-number");
-    iltpNumber.innerText = "0";
+    const iltpNumber = document.createElement('span');
+    iltpNumber.setAttribute('id', 'iltp-content-number');
+    iltpNumber.innerText = '0';
     iltpBox.appendChild(iltpNumber);
   }
 
@@ -53,10 +50,10 @@ const removeLikeButtonIfExisted = () => {
 };
 
 let userLikeStatus = false;
-const iltpContainer = document.getElementById("i-like-this-page");
+const iltpContainer = document.getElementById('i-like-this-page');
 
-iltpContainer.addEventListener("click", () => {
-  const isNotError = document.getElementById("iltp-content-number");
+iltpContainer.addEventListener('click', () => {
+  const isNotError = document.getElementById('iltp-content-number');
   if (isNotError) {
     const urlWithoutProtocol = window.location.host + window.location.pathname;
 
@@ -109,13 +106,13 @@ const cancelLikeAndRender = async (currentLocation) => {
 
 const renderApiResult = (apiResult) => {
   userLikeStatus = apiResult.response.likeStatus;
-  document.getElementById("iltp-box").style.backgroundColor = userLikeStatus
+  document.getElementById('iltp-box').style.backgroundColor = userLikeStatus
     ? likeBackgroundColor
     : nonLikeBackgroundColor;
-  document.getElementById("iltp-content-icon-img").src =
-    "data:image/png;base64," +
-    (userLikeStatus ? heart64x64Base64 : heartLine64x64Base64);
-  document.getElementById("iltp-content-number").innerText =
+  document.getElementById('iltp-content-icon-img').src = userLikeStatus
+    ? likeIcon
+    : unlikeIcon;
+  document.getElementById('iltp-content-number').innerText =
     apiResult.response.likeCount;
 };
 
@@ -126,7 +123,7 @@ const handleError = (err) => {
 
 renderButton(true);
 
-window.addEventListener("load", () => {
+window.addEventListener('load', () => {
   const currentLocation = window.location.host + window.location.pathname;
   getLikeAndRender(currentLocation);
 });

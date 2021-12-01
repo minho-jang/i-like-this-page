@@ -1,26 +1,34 @@
-var path = require("path");
+var path = require('path');
 
 module.exports = {
-  mode: "production",
-  entry: "./src/js/i-like-this-page.js",
+  mode: 'production',
+  entry: './src/js/i-like-this-page.js',
   output: {
-    filename: "iltp.bundle.min.js",
-    path: path.resolve(__dirname, "dist"),
+    filename: 'iltp.bundle.min.js',
+    path: path.resolve(__dirname, 'dist'),
   },
   module: {
     rules: [
       {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
+      {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.m?js$/,
         exclude: /(node_modules|bower_components)/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
-            presets: ["@babel/preset-env"],
-            plugins: ["@babel/transform-runtime"],
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/transform-runtime'],
           },
         },
       },
