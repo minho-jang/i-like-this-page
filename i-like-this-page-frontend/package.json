@@ -11,13 +11,14 @@
     "@babel/runtime": "^7.15.4",
     "babel-loader": "^8.2.2",
     "css-loader": "^6.3.0",
+    "file-loader": "^6.2.0",
     "style-loader": "^3.3.0",
     "webpack": "^5.55.1",
     "webpack-cli": "^4.8.0"
   },
   "scripts": {
     "build": "webpack",
-    "deploy": "webpack && cp ./dist/iltp.bundle.min.js ../i-like-this-page-backend/src/main/resources/js"
+    "deploy": "webpack && find dist -name '*.*' -exec cp '{}' ../i-like-this-page-backend/src/main/resources/static/bundle \\;"
   },
   "keywords": [],
   "author": "",
