@@ -17,7 +17,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "deploy": "cp ./dist/iltp.bundle.min.js ../i-like-this-page-backend/src/main/resources"
+    "deploy": "webpack && cp ./dist/iltp.bundle.min.js ../i-like-this-page-backend/src/main/resources/js"
   },
   "keywords": [],
   "author": "",
