@@ -8,16 +8,13 @@ on:
     branches: [develop]
 
 jobs:
-  frontend_ci:
+  fe_be_cicd:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: i-like-this-page-frontend
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
+        
       - name: Set up Node 14
         uses: actions/setup-node@v2
         with:
@@ -25,21 +22,11 @@ jobs:
 
       - name: Install npm packages
         run: npm install
+        working-directory: i-like-this-page-frontend
 
       - name: Build frontend and Copy to backend resources
         run: npm run deploy
-
-  backend_cicd:
-    needs: frontend_ci
-
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: i-like-this-page-backend
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+        working-directory: i-like-this-page-frontend
 
       - name: Set up JDK 11
         uses: actions/setup-java@v2
@@ -50,6 +37,7 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+        working-directory: i-like-this-page-backend
 
       - name: Copy production configuration from S3
         env:
@@ -60,12 +48,15 @@ jobs:
           --region ap-northeast-2 \
           --acl private \
           s3://iltp-deploy-bucket/application.yml src/main/resources/
+        working-directory: i-like-this-page-backend
 
       - name: Test and Build with Gradle
         run: ./gradlew clean build
+        working-directory: i-like-this-page-backend
 
       - name: Zip entire project directory
         run: zip -r iltp-backend *
+        working-directory: i-like-this-page-backend
 
       - name: Deliver to AWS S3
         env:
@@ -76,8 +67,9 @@ jobs:
           --region ap-northeast-2 \
           --acl private \
           iltp-backend.zip s3://iltp-deploy-bucket/
+        working-directory: i-like-this-page-backend
 
-      - name: Deploy
+      - name: Deploy zipped file from S3 to EC2
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -87,3 +79,4 @@ jobs:
           --deployment-group-name iltp-deploy-group \
           --s3-location bucket=iltp-deploy-bucket,bundleType=zip,key=iltp-backend.zip \
           --region ap-northeast-2
+        working-directory: i-like-this-page-backend
