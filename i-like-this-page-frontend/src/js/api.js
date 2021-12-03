@@ -1,8 +1,8 @@
-const DOMAIN = "https://iltp.link";
+const DOMAIN = 'https://iltp.link';
 const RESTAPI_BASEADDRESS = `${DOMAIN}/api/v1`;
 
-const AUTHORIZATION_PREFIX = "Bearer ";
-const TOKEN_KEY_LOCALSTORAGE = "iltp_tk";
+const AUTHORIZATION_PREFIX = 'Bearer ';
+const TOKEN_KEY_LOCALSTORAGE = 'iltp_tk';
 
 export const getLike = async (currentLocation) => {
   const token = await checkToken();
@@ -10,7 +10,7 @@ export const getLike = async (currentLocation) => {
     url: currentLocation,
   });
   const options = {
-    method: "GET",
+    method: 'GET',
     headers: {
       Authorization: AUTHORIZATION_PREFIX + token,
     },
@@ -24,10 +24,10 @@ export const addLike = async (currentLocation) => {
   const token = await checkToken();
   const addLikeUrl = `${RESTAPI_BASEADDRESS}/like`;
   const options = {
-    method: "POST",
+    method: 'POST',
     headers: {
       Authorization: AUTHORIZATION_PREFIX + token,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({ url: currentLocation }),
   };
@@ -40,10 +40,10 @@ export const deleteLike = async (currentLocation) => {
   const token = await checkToken();
   const deleteLikeUrl = `${RESTAPI_BASEADDRESS}/like`;
   const options = {
-    method: "DELETE",
+    method: 'DELETE',
     headers: {
       Authorization: AUTHORIZATION_PREFIX + token,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({ url: currentLocation }),
   };
@@ -81,9 +81,9 @@ const fetchSync = async (url, options) => {
 };
 
 const createGetRequestUrl = (url, params) => {
-  const tmpUrl = new URL(url);
-  tmpUrl.search = new URLSearchParams(params).toString();
-  return tmpUrl.toString();
+  const urlWithParams = new URL(url);
+  urlWithParams.search = new URLSearchParams(params).toString();
+  return urlWithParams.toString();
 };
 
 const handleError = (message) => {

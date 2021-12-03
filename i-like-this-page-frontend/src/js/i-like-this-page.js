@@ -1,46 +1,48 @@
 import '../css/i-like-this-page.css';
-import likeIcon from '../images/like-icon-64x64.png';
-import unlikeIcon from '../images/unlike-icon-64x64.png';
-import warningIcon from '../images/warning-icon-64x64.png';
+import likeIcon from '../images/like-cat-64x64.png';
+import unlikeIcon from '../images/unlike-cat-64x64.png';
 
 import { getLike, deleteLike, addLike } from './api.js';
 
-const nonLikeBackgroundColor = 'rgb(255 221 221)';
-const likeBackgroundColor = 'rgb(255, 202, 202)';
-const errorBackgroundColor = 'rgb(214, 214, 214)';
+const renderButton = (isError = false) => {
+  const iltpBoxEl = document.createElement('div');
+  iltpBoxEl.setAttribute('id', 'iltp-box');
+  iltpBoxEl.classList.add('iltp-box');
 
-const renderButton = (likeOrError) => {
-  const iltpBox = document.createElement('div');
-  iltpBox.setAttribute('id', 'iltp-box');
-
-  const iltpBoxStyle = `
-    background-color: ${
-      likeOrError ? nonLikeBackgroundColor : errorBackgroundColor
-    };
-    cursor: ${likeOrError ? 'pointer' : 'not-allowed'};`;
-
-  iltpBox.setAttribute('style', iltpBoxStyle);
-
-  const iltpIcon = document.createElement('span');
-  iltpIcon.setAttribute('id', 'iltp-content-icon');
-  const heartImage = document.createElement('img');
-  heartImage.setAttribute('id', 'iltp-content-icon-img');
-  heartImage.width = 16;
-  heartImage.height = 16;
-  heartImage.src = likeOrError ? unlikeIcon : warningIcon;
-
-  iltpIcon.appendChild(heartImage);
-  iltpBox.appendChild(iltpIcon);
-
-  if (likeOrError) {
-    const iltpNumber = document.createElement('span');
-    iltpNumber.setAttribute('id', 'iltp-content-number');
-    iltpNumber.innerText = '0';
-    iltpBox.appendChild(iltpNumber);
-  }
+  if (isError) renderErrorButton(iltpBoxEl);
+  else renderLikeButton(iltpBoxEl);
 
   removeLikeButtonIfExisted();
-  iltpContainer.appendChild(iltpBox);
+  iltpContainer.appendChild(iltpBoxEl);
+};
+
+const renderErrorButton = (iltpBoxEl) => {
+  iltpBoxEl.classList.add('iltp-box-error');
+
+  const errorMessage = 'ERR :(';
+  const errorMessageEl = document.createElement('span');
+  errorMessageEl.setAttribute('id', 'iltp-error-message');
+  errorMessageEl.innerText = errorMessage;
+  iltpBoxEl.append(errorMessageEl);
+};
+
+const renderLikeButton = (iltpBoxEl) => {
+  const iltpIconEl = document.createElement('span');
+  iltpIconEl.setAttribute('id', 'iltp-content-icon');
+  const heartImageEl = document.createElement('img');
+  heartImageEl.setAttribute('id', 'iltp-content-icon-img');
+  heartImageEl.width = 24;
+  heartImageEl.height = 24;
+  heartImageEl.src = unlikeIcon;
+
+  iltpIconEl.appendChild(heartImageEl);
+  iltpBoxEl.appendChild(iltpIconEl);
+
+  const iltpNumberEl = document.createElement('span');
+  iltpNumberEl.setAttribute('id', 'iltp-content-number');
+  iltpNumberEl.classList.add('iltp-content-number');
+  iltpNumberEl.innerText = '0'; // default value
+  iltpBoxEl.appendChild(iltpNumberEl);
 };
 
 const removeLikeButtonIfExisted = () => {
@@ -106,22 +108,24 @@ const cancelLikeAndRender = async (currentLocation) => {
 
 const renderApiResult = (apiResult) => {
   userLikeStatus = apiResult.response.likeStatus;
-  document.getElementById('iltp-box').style.backgroundColor = userLikeStatus
-    ? likeBackgroundColor
-    : nonLikeBackgroundColor;
   document.getElementById('iltp-content-icon-img').src = userLikeStatus
     ? likeIcon
     : unlikeIcon;
-  document.getElementById('iltp-content-number').innerText =
-    apiResult.response.likeCount;
+  document.getElementById('iltp-content-number').innerText = numberWithComma(
+    apiResult.response.likeCount
+  );
+};
+
+const numberWithComma = (num) => {
+  return num.toLocaleString();
 };
 
 const handleError = (err) => {
   console.error(err);
-  renderButton(false);
+  renderButton(true);
 };
 
-renderButton(true);
+renderButton();
 
 window.addEventListener('load', () => {
   const currentLocation = window.location.host + window.location.pathname;
