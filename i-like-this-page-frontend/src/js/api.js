@@ -1,16 +1,18 @@
-const DOMAIN = "https://iltp.link";
+// const DOMAIN = 'https://iltp.link';
+const DOMAIN = 'http://localhost:8080';
 const RESTAPI_BASEADDRESS = `${DOMAIN}/api/v1`;
 
-const AUTHORIZATION_PREFIX = "Bearer ";
-const TOKEN_KEY_LOCALSTORAGE = "iltp_tk";
+const AUTHORIZATION_PREFIX = 'Bearer ';
+const TOKEN_KEY_LOCALSTORAGE = 'iltp_tk';
 
 export const getLike = async (currentLocation) => {
   const token = await checkToken();
-  const getLikeUrl = createGetRequestUrl(`${RESTAPI_BASEADDRESS}/like`, {
+  const getLikeUrl = createRequestUrlWithParams(`${RESTAPI_BASEADDRESS}/like`, {
     url: currentLocation,
   });
+
   const options = {
-    method: "GET",
+    method: 'GET',
     headers: {
       Authorization: AUTHORIZATION_PREFIX + token,
     },
@@ -22,14 +24,15 @@ export const getLike = async (currentLocation) => {
 
 export const addLike = async (currentLocation) => {
   const token = await checkToken();
-  const addLikeUrl = `${RESTAPI_BASEADDRESS}/like`;
+  const addLikeUrl = createRequestUrlWithParams(`${RESTAPI_BASEADDRESS}/like`, {
+    url: currentLocation,
+  });
+
   const options = {
-    method: "POST",
+    method: 'POST',
     headers: {
       Authorization: AUTHORIZATION_PREFIX + token,
-      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ url: currentLocation }),
   };
 
   const apiResult = await fetchSync(addLikeUrl, options);
@@ -38,14 +41,16 @@ export const addLike = async (currentLocation) => {
 
 export const deleteLike = async (currentLocation) => {
   const token = await checkToken();
-  const deleteLikeUrl = `${RESTAPI_BASEADDRESS}/like`;
+  const deleteLikeUrl = createRequestUrlWithParams(
+    `${RESTAPI_BASEADDRESS}/like`,
+    { url: currentLocation }
+  );
+
   const options = {
-    method: "DELETE",
+    method: 'DELETE',
     headers: {
       Authorization: AUTHORIZATION_PREFIX + token,
-      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ url: currentLocation }),
   };
 
   const apiResult = await fetchSync(deleteLikeUrl, options);
@@ -80,7 +85,7 @@ const fetchSync = async (url, options) => {
   return responseJson;
 };
 
-const createGetRequestUrl = (url, params) => {
+const createRequestUrlWithParams = (url, params) => {
   const tmpUrl = new URL(url);
   tmpUrl.search = new URLSearchParams(params).toString();
   return tmpUrl.toString();

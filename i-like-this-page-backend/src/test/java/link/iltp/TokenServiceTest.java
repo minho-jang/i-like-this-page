@@ -1,12 +1,15 @@
 package link.iltp;
 
-import link.iltp.common.util.StringUtils;
+import com.google.common.base.Strings;
 import link.iltp.service.TokenService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("TokenService 테스트")
@@ -30,6 +33,6 @@ public class TokenServiceTest {
 		String newToken = tokenService.generateNewToken();
 		String uuid = tokenService.getUuidFromToken(newToken);
 
-		assertTrue(StringUtils.isNotEmpty(uuid));
+		assertThat(Strings.isNullOrEmpty(uuid), is(equalTo(false)));
 	}
 }

@@ -1,6 +1,5 @@
 package link.iltp;
 
-import link.iltp.common.util.JsonUtils;
 import link.iltp.service.TokenService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +7,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -41,16 +38,12 @@ public class LikeControllerTest {
 	@Order(1)
 	public void postLikeTest() throws Exception {
 		String token = tokenService.generateToken(TEMP_UUID);
-		token = "Bearer "+ token;
+		token = "Bearer " + token;
 
 		String url = "naver.com";
-		Map<String, String> postLikeContentJson = new HashMap<>();
-		postLikeContentJson.put("url", url);
-		String postLikeContentJsonString = JsonUtils.objectToJsonString(postLikeContentJson);
 
 		this.mockmvc.perform(post("/api/v1/like")
-						.content(postLikeContentJsonString)
-						.contentType("application/json")
+						.param("url", url)
 						.header("Authorization", token))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.success").value("true"))
@@ -67,7 +60,7 @@ public class LikeControllerTest {
 	@Order(2)
 	public void getLikeTest() throws Exception {
 		String token = tokenService.generateToken(TEMP_UUID);
-		token = "Bearer "+ token;
+		token = "Bearer " + token;
 
 		// already saved "naver.com" above postLikeTest().
 		String url = "naver.com";
@@ -90,15 +83,12 @@ public class LikeControllerTest {
 	@Order(3)
 	public void deleteLikeTest() throws Exception {
 		String token = tokenService.generateToken(TEMP_UUID);
-		token = "Bearer "+ token;
+		token = "Bearer " + token;
 
 		String url = "naver.com";
-		Map<String, String> postLikeContentJson = new HashMap<>();
-		postLikeContentJson.put("url", url);
-		String postLikeContentJsonString = JsonUtils.objectToJsonString(postLikeContentJson);
 
 		this.mockmvc.perform(delete("/api/v1/like")
-						.content(postLikeContentJsonString)
+						.param("url", url)
 						.header("Authorization", token))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.success").value("true"))

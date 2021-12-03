@@ -1,6 +1,5 @@
 package link.iltp.service;
 
-import link.iltp.common.util.DateTimeUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
@@ -8,6 +7,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
 
@@ -22,14 +23,15 @@ public class TokenService {
 
 	public String generateToken(String uuid) {
 
-		Date exp = new Date(DateTimeUtils.millsOf("21000101000000"));
+		LocalDateTime January1st2100 = LocalDateTime.of(2100, 1, 1, 0, 0, 0);
+		Date expirationDate = Date.from(January1st2100.atZone(ZoneId.systemDefault()).toInstant());
 		Date now = new Date();
 
 		return Jwts.builder()
 				.setHeaderParam(Header.TYPE, Header.JWT_TYPE)
 				.setIssuer(ISSUER)
 				.setIssuedAt(now)
-				.setExpiration(exp)
+				.setExpiration(expirationDate)
 				.claim("uuid", uuid)
 				.signWith(SignatureAlgorithm.HS512, SECRET)
 				.compact();
@@ -44,6 +46,7 @@ public class TokenService {
 				.setSigningKey(SECRET)
 				.parseClaimsJws(token)
 				.getBody();
+
 		return claims.get("uuid").toString();
 	}
 }
