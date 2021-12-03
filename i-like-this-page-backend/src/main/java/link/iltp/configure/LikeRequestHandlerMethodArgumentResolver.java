@@ -1,11 +1,7 @@
 package link.iltp.configure;
 
-import link.iltp.common.util.IOUtils;
-import link.iltp.common.util.JsonUtils;
-import link.iltp.common.util.StringUtils;
+import com.google.common.base.Strings;
 import link.iltp.common.dto.LikeRequestDto;
-import link.iltp.exception.InvalidArgumentException;
-import link.iltp.exception.UnsupportedMethodException;
 import link.iltp.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
@@ -15,14 +11,17 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
 import java.util.Optional;
 
 public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
+
+	private static final String ERR_SERVLET_REQUEST_IS_NULL = "HttpServletRequest is null.";
+	private static final String ERR_NO_UUID_IN_TOKEN = "Failed to get uuid from token.";
+	private static final String ERR_INVALID_AUTHORIZATION = "Invalid string in Authorization header.";
+	private static final String ERR_NO_URL_IN_REQUEST = "Failed to get URL from request.";
+
+	private static final String JWT_AUTH_PREFIX = "Bearer ";
 
 	@Autowired
 	TokenService tokenService;
@@ -43,16 +42,12 @@ public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodAr
 	}
 
 	private LikeRequestDto createLikeRequest(NativeWebRequest webRequest) {
-		Optional<HttpServletRequest> webRequestNullable =
-				Optional.ofNullable(webRequest.getNativeRequest(HttpServletRequest.class));
 		HttpServletRequest servletRequest =
-				webRequestNullable.orElseThrow(() -> new RuntimeException("HttpServletRequest must not be null"));
+				Optional.ofNullable(webRequest.getNativeRequest(HttpServletRequest.class))
+						.orElseThrow(() -> new NullPointerException(ERR_SERVLET_REQUEST_IS_NULL));
 
 		String uuid = getUuidFromRequest(servletRequest);
 		String url = getUrlFromRequest(servletRequest);
-
-		throwExceptionIfStringEmpty(uuid, "UUID cannot be empty.");
-		throwExceptionIfStringEmpty(url, "URL cannot be empty.");
 
 		return new LikeRequestDto(uuid, url);
 	}
@@ -62,57 +57,34 @@ public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodAr
 
 		verifyAuthorizationHeader(authHeader);
 		String token = extractTokenFromAuthorizationHeader(authHeader);
+		String uuid = tokenService.getUuidFromToken(token);
+		
+		if (Strings.isNullOrEmpty(uuid))
+			throw new IllegalStateException(ERR_NO_UUID_IN_TOKEN);
 
-		return tokenService.getUuidFromToken(token);
+		return uuid;
 	}
-
-	private static final String JWT_AUTH_PREFIX = "Bearer ";
 
 	private String extractTokenFromAuthorizationHeader(String authHeader) {
 		return authHeader.substring(JWT_AUTH_PREFIX.length());
 	}
 
 	private void verifyAuthorizationHeader(String authHeader) {
-		if (StringUtils.isEmpty(authHeader) || !authHeader.startsWith(JWT_AUTH_PREFIX)) {
-			throw new IllegalArgumentException("Invalid string in Authorization header.");
+		if (Strings.isNullOrEmpty(authHeader) || !authHeader.startsWith(JWT_AUTH_PREFIX)) {
+			throw new IllegalArgumentException(ERR_INVALID_AUTHORIZATION);
 		}
 	}
 
 	private String getUrlFromRequest(HttpServletRequest servletRequest) {
-		String method = servletRequest.getMethod();
-		if ("GET".equals(method)) {
-			return getUrlFromGetRequest(servletRequest);
+		String url = getUrlFromRequestParameter(servletRequest);
 
-		} else if ("POST".equals(method) || "DELETE".equals(method)) {
-			return getUrlFromPostRequest(servletRequest);
+		if (Strings.isNullOrEmpty(url))
+			throw new IllegalStateException(ERR_NO_URL_IN_REQUEST);
 
-		} else {
-			throw new UnsupportedMethodException(method + " is an unsupported method");
-		}
+		return url;
 	}
 
-	private String getUrlFromGetRequest(HttpServletRequest servletRequest) {
+	private String getUrlFromRequestParameter(HttpServletRequest servletRequest) {
 		return servletRequest.getParameter("url");
-	}
-
-	private String getUrlFromPostRequest(HttpServletRequest servletRequest) {
-		try {
-			String url = "";
-			ServletInputStream input = servletRequest.getInputStream();
-			String body = IOUtils.inputStreamToString(input, StandardCharsets.UTF_8);
-			if (StringUtils.isNotEmpty(body)) {
-				Map<String, Object> map = JsonUtils.jsonStringToMap(body);
-				url = (String) map.get("url");
-			}
-			return url;
-
-		} catch (IOException e) {
-			throw new RuntimeException("Error reading request body.");
-		}
-	}
-
-	private void throwExceptionIfStringEmpty(String str, String errorMessage) {
-		if (StringUtils.isEmpty(str))
-			throw new InvalidArgumentException(errorMessage);
 	}
 }

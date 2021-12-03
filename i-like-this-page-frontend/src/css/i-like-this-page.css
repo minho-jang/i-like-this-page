@@ -1,22 +1,29 @@
 #i-like-this-page {
   display: inline-block;
   color: black;
+  min-height: 1em;
 }
-#iltp-box {
+.iltp-box {
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
-  border-radius: 0.5em;
-  background-color: rgb(214, 214, 214);
-  padding: 0.5rem 1rem;
-  font-family: "Fira Sans", sans-serif;
+  border-radius: 0.7em;
+  background-color: rgb(255, 255, 255);
+  padding: 0.3rem 0.8rem;
   border: none;
   overflow: hidden;
   cursor: pointer;
+  box-shadow: 0 0 0.3em rgb(168, 168, 168);
+  min-height: 1.5em;
 }
-#iltp-box::before {
-  content: "";
+.iltp-box-error {
+  font-size: 1em;
+  font-family: monospace;
+  cursor: not-allowed;
+}
+.iltp-box::before {
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -29,15 +36,15 @@
   opacity: 0;
   transition: all 0.3s;
 }
-#iltp-box:hover::before {
+.iltp-box:hover::before {
   opacity: 1;
-  background-color: rgb(255, 78, 78, 0.1);
+  background-color: rgba(192, 192, 192, 0.1);
   -webkit-transform: scaleX(1);
   transform: scaleX(1);
   transition: -webkit-transform 0.6s cubic-bezier(0.08, 0.35, 0.13, 1.02),
     opacity 0.4s;
   transition: transform 0.6s cubic-bezier(0.08, 0.35, 0.13, 1.02), opacity;
 }
-#iltp-content-number {
-  font-size: 0.75em;
+.iltp-content-number {
+  font-family: monospace;
 }

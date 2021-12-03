@@ -1,10 +1,6 @@
 package link.iltp.configure;
 
 import link.iltp.api.ApiResult;
-import link.iltp.exception.InvalidArgumentException;
-import link.iltp.exception.JsonException;
-import link.iltp.exception.NotFoundException;
-import link.iltp.exception.UnsupportedMethodException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
@@ -31,18 +27,10 @@ public class GlobalControllerExceptionHandler {
 	}
 
 	@ExceptionHandler({
-			JsonException.class,
-			InvalidArgumentException.class,
-			UnsupportedMethodException.class,
 			IllegalArgumentException.class
 	})
 	public ResponseEntity<?> handleBadRequestException(Exception e) {
 		return newResponse(e, HttpStatus.BAD_REQUEST);
-	}
-
-	@ExceptionHandler(NotFoundException.class)
-	public ResponseEntity<?> handleNotFoundException(Exception e) {
-		return newResponse(e, HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler({
