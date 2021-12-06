@@ -12,8 +12,12 @@ import java.util.List;
 @Service
 public class LikeService {
 
+	private final LikeRepository likeRepository;
+
 	@Autowired
-	private LikeRepository likeRepository;
+	public LikeService(LikeRepository likeRepository) {
+		this.likeRepository = likeRepository;
+	}
 
 	public Long countLikeOf(String url) {
 		return likeRepository.countByUrl(url);

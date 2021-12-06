@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @Slf4j
 public class InfoController {
-	@Autowired
-	private BuildProperties buildProperties;
+
+	private final BuildProperties buildProperties;
+
+	public InfoController(BuildProperties buildProperties) {
+		this.buildProperties = buildProperties;
+	}
 
 	@GetMapping("/version")
 	public ApiResult<String> version() {

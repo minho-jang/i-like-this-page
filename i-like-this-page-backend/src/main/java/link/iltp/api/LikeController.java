@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class LikeController {
 
-	@Autowired
-	LikeService likeService;
+	private final LikeService likeService;
+
+	public LikeController(LikeService likeService) {
+		this.likeService = likeService;
+	}
 
 	@GetMapping("")
 	public ApiResult<LikeResponseDto> getLike(LikeRequestDto param) {
