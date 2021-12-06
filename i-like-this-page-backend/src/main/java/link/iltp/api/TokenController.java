@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class TokenController {
 
-	@Autowired
-	TokenService tokenService;
+	private final TokenService tokenService;
+
+	public TokenController(TokenService tokenService) {
+		this.tokenService = tokenService;
+	}
 
 	@GetMapping("")
 	public ApiResult<String> getToken() {
