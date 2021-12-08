@@ -1,10 +1,10 @@
 package link.iltp.configure;
 
-import link.iltp.api.ApiResult;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import link.iltp.api.ApiResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,8 @@ public class GlobalControllerExceptionHandler {
 	}
 
 	@ExceptionHandler({
-			IllegalArgumentException.class
+			IllegalArgumentException.class,
+			IllegalStateException.class
 	})
 	public ResponseEntity<?> handleBadRequestException(Exception e) {
 		return newResponse(e, HttpStatus.BAD_REQUEST);

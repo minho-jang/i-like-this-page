@@ -1,8 +1,7 @@
 package link.iltp.api;
 
-import link.iltp.service.TokenService;
+import link.iltp.common.util.JwtTokenProvider;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,17 +13,17 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class TokenController {
 
-	private final TokenService tokenService;
+	private final JwtTokenProvider jwtTokenProvider;
 
-	public TokenController(TokenService tokenService) {
-		this.tokenService = tokenService;
+	public TokenController(JwtTokenProvider jwtTokenProvider) {
+		this.jwtTokenProvider = jwtTokenProvider;
 	}
 
 	@GetMapping("")
 	public ApiResult<String> getToken() {
 		log.info("Get new token");
 		return ApiResult.success(
-				tokenService.generateNewToken()
+				jwtTokenProvider.generateNewToken()
 		);
 	}
 }
