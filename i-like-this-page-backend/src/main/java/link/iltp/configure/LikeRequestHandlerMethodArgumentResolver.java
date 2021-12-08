@@ -2,10 +2,10 @@ package link.iltp.configure;
 
 import com.google.common.base.Strings;
 import link.iltp.common.dto.LikeRequestDto;
-import link.iltp.service.TokenService;
-import org.springframework.beans.factory.annotation.Autowired;
+import link.iltp.common.util.JwtTokenProvider;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -14,17 +14,20 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
+@Component
 public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
 	private static final String ERR_SERVLET_REQUEST_IS_NULL = "HttpServletRequest is null.";
 	private static final String ERR_NO_UUID_IN_TOKEN = "Failed to get uuid from token.";
 	private static final String ERR_INVALID_AUTHORIZATION = "Invalid string in Authorization header.";
 	private static final String ERR_NO_URL_IN_REQUEST = "Failed to get URL from request.";
-
 	private static final String JWT_AUTH_PREFIX = "Bearer ";
 
-	@Autowired
-	TokenService tokenService;
+	private final JwtTokenProvider jwtTokenProvider;
+
+	public LikeRequestHandlerMethodArgumentResolver(JwtTokenProvider jwtTokenProvider) {
+		this.jwtTokenProvider = jwtTokenProvider;
+	}
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
@@ -49,7 +52,10 @@ public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodAr
 		String uuid = getUuidFromRequest(servletRequest);
 		String url = getUrlFromRequest(servletRequest);
 
-		return new LikeRequestDto(uuid, url);
+		return LikeRequestDto.builder()
+				.url(url)
+				.uuid(uuid)
+				.build();
 	}
 
 	private String getUuidFromRequest(HttpServletRequest servletRequest) {
@@ -57,8 +63,8 @@ public class LikeRequestHandlerMethodArgumentResolver implements HandlerMethodAr
 
 		verifyAuthorizationHeader(authHeader);
 		String token = extractTokenFromAuthorizationHeader(authHeader);
-		String uuid = tokenService.getUuidFromToken(token);
-		
+		String uuid = jwtTokenProvider.getUuidFromToken(token);
+
 		if (Strings.isNullOrEmpty(uuid))
 			throw new IllegalStateException(ERR_NO_UUID_IN_TOKEN);
 

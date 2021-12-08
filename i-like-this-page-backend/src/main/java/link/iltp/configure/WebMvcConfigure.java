@@ -1,5 +1,6 @@
 package link.iltp.configure;
 
+import link.iltp.common.util.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -11,8 +12,13 @@ import java.util.List;
 public class WebMvcConfigure implements WebMvcConfigurer {
 
 	@Bean
+	public JwtTokenProvider jwtTokenProvider() {
+		return new JwtTokenProvider();
+	}
+
+	@Bean
 	public LikeRequestHandlerMethodArgumentResolver LikeRequestHandlerMethodArgumentResolver() {
-		return new LikeRequestHandlerMethodArgumentResolver();
+		return new LikeRequestHandlerMethodArgumentResolver(jwtTokenProvider());
 	}
 
 	@Override

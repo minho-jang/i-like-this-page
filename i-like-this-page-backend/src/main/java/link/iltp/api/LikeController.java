@@ -4,7 +4,6 @@ import link.iltp.common.dto.LikeRequestDto;
 import link.iltp.common.dto.LikeResponseDto;
 import link.iltp.service.LikeService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,7 +35,7 @@ public class LikeController {
 	}
 
 	@DeleteMapping("")
-	public ApiResult<LikeResponseDto> subtractLike(LikeRequestDto param) {
+	public ApiResult<LikeResponseDto> cancelLike(LikeRequestDto param) {
 		log.info("Cancel 'like' to this url for this ip address: " + param);
 		return ApiResult.success(
 				likeService.deleteLike(param.getUrl(), param.getUuid())

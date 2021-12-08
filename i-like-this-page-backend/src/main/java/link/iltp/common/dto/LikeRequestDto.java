@@ -1,18 +1,12 @@
 package link.iltp.common.dto;
 
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
-@ToString
+@AllArgsConstructor
+@Builder
 @Getter
+@ToString
 public class LikeRequestDto {
-
-	private final String url;
-	private final String uuid;
-
-	public LikeRequestDto(String uuid, String url) {
-		this.url = url;
-		this.uuid = uuid;
-	}
-
+	private String url;
+	private String uuid;
 }
