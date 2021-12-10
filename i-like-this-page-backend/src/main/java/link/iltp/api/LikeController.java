@@ -20,7 +20,7 @@ public class LikeController {
 
 	@GetMapping("")
 	public ApiResult<LikeResponseDto> getLike(LikeRequestDto param) {
-		log.info("Get 'like' count of url and Get 'like' status of user with this ip address: " + param);
+		log.info("Get LIKE: " + param);
 		return ApiResult.success(
 				likeService.getLike(param.getUrl(), param.getUuid())
 		);
@@ -28,7 +28,7 @@ public class LikeController {
 
 	@PostMapping("")
 	public ApiResult<LikeResponseDto> addLike(LikeRequestDto param) {
-		log.info("Add 'like' to this url for this ip address: " + param);
+		log.info("Add LIKE: " + param);
 		return ApiResult.success(
 				likeService.saveLike(param.getUrl(), param.getUuid())
 		);
@@ -36,7 +36,7 @@ public class LikeController {
 
 	@DeleteMapping("")
 	public ApiResult<LikeResponseDto> cancelLike(LikeRequestDto param) {
-		log.info("Cancel 'like' to this url for this ip address: " + param);
+		log.info("Cancel LIKE: " + param);
 		return ApiResult.success(
 				likeService.deleteLike(param.getUrl(), param.getUuid())
 		);
