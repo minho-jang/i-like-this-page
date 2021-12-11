@@ -1,13 +1,7 @@
 package link.iltp.integration;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import link.iltp.api.ApiResult;
 import link.iltp.common.dto.LikeResponseDto;
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +13,6 @@ import java.util.stream.Collectors;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class Scenario3 extends ScenarioBase {
 	private static final int THREAD_POOL_SIZE = 10;
@@ -58,7 +50,7 @@ public class Scenario3 extends ScenarioBase {
 
 		for (int i = 0; i < USER_NUM; i++) {
 			final String newToken = JWT_AUTH_PREFIX + jwtTokenProvider.generateNewToken();
-			User user = new User(executorService, mockMvc, newToken);
+			User user = new User(executorService, newToken);
 			users.add(user);
 		}
 
@@ -66,25 +58,15 @@ public class Scenario3 extends ScenarioBase {
 	}
 
 	private long getLikeCount() throws Exception {
-		ResultActions action = mockMvc.perform(
-				get("/api/v1/like")
-						.param("url", TEST_URL)
-						.header("Authorization", JWT_AUTH_PREFIX + jwtTokenProvider.generateNewToken()));
-		final MvcResult result = action
-				.andExpect(status().isOk())
-				.andReturn();
+		String token = JWT_AUTH_PREFIX + jwtTokenProvider.generateNewToken();
+		LikeResponseDto likeResponseDto = GET_like(TEST_URL, token);
 
-		final String body = result.getResponse().getContentAsString();
-		final ApiResult<LikeResponseDto> apiResult = convertJsonStringToObject(body, new TypeReference<>() {
-		});
-
-		long likeCount = apiResult.getResponse().getLikeCount();
-		printDescription("getLikeCount() = " + likeCount);
-		return likeCount;
+		printDescription("getLikeCount() = " + likeResponseDto.getLikeCount());
+		return likeResponseDto.getLikeCount();
 	}
 
 	private void concurrentlyGetLikeOf() {
-		final List<CompletableFuture<MvcResult>> futures = users.parallelStream()
+		final List<CompletableFuture<Void>> futures = users.stream()
 				.map(u -> u.callGetLikeAsync(TEST_URL))
 				.collect(Collectors.toList());
 
@@ -116,51 +98,39 @@ public class Scenario3 extends ScenarioBase {
 		assertThat(nowLikeCount, is(equalTo(initialLikeCount)));
 	}
 
-	static class User {
+	class User {
 		private final ExecutorService executorService;
-		private final MockMvc mockMvc;
 		private final String token;
 
-		User(ExecutorService executorService, MockMvc mockMvc, String token) {
+		User(ExecutorService executorService, String token) {
 			this.executorService = executorService;
-			this.mockMvc = mockMvc;
 			this.token = token;
 		}
 
-		public CompletableFuture<MvcResult> callGetLikeAsync(String url) {
-			return CompletableFuture.supplyAsync(() -> {
+		public CompletableFuture<Void> callGetLikeAsync(String url) {
+			return CompletableFuture.runAsync(() -> {
 						try {
-							ResultActions action = mockMvc.perform(get("/api/v1/like")
-									.param("url", url)
-									.header("Authorization", token));
-							return action.andExpect(status().isOk()).andReturn();
+							GET_like(TEST_URL, token);
 						} catch (Exception e) {
-							throw new RuntimeException("Something wrong with calling GET /api/v1/like");
+							throw new IllegalStateException("Failed call GET /api/v1/like", e);
 						}
 					}, executorService)
 					.exceptionally(e -> {
-						throw new RuntimeException("Failed to get like of " + url, e);
+						throw new IllegalStateException("Failed to get like of " + url, e);
 					});
 		}
 
 		public CompletableFuture<Void> callAddLikeThenCancelLike(String url) {
 			return CompletableFuture.runAsync(() -> {
 						try {
-							ResultActions addAction = mockMvc.perform(post("/api/v1/like")
-									.param("url", url)
-									.header("Authorization", token));
-							addAction.andExpect(status().isOk());
-
-							ResultActions cancelAction = mockMvc.perform(delete("/api/v1/like")
-									.param("url", url)
-									.header("Authorization", token));
-							cancelAction.andExpect(status().isOk());
+							POST_like(url, token);
+							DELETE_like(url, token);
 						} catch (Exception e) {
-							throw new RuntimeException("Something wrong with calling POST and DELETE /api/v1/like");
+							throw new IllegalStateException("Failed to call POST and DELETE /api/v1/like", e);
 						}
 					}, executorService)
 					.exceptionally(e -> {
-						throw new RuntimeException("Failed to add and cancel like of " + url, e);
+						throw new IllegalStateException("Failed to add and cancel like of " + url, e);
 					});
 		}
 	}

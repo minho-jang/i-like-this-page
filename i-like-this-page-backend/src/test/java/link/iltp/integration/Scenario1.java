@@ -1,17 +1,11 @@
 package link.iltp.integration;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import link.iltp.api.ApiResult;
 import link.iltp.common.dto.LikeResponseDto;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 public class Scenario1 extends ScenarioBase {
 	private static final String TEST_URL = "localhost/test/1/";
@@ -29,89 +23,42 @@ public class Scenario1 extends ScenarioBase {
 		printDescription(SCENE_0);
 
 		printDescription(SCENE_1);
-		getNewToken();
+		getNewTokenForIltp();
 
 		printDescription(SCENE_2);
-		getLikeOf(TEST_URL);
+		getLikeOfUrl();
 
 		printDescription(SCENE_3);
-		likeThis(TEST_URL);
+		likeThisUrl();
 
 		printDescription(SCENE_4);
-		unlikeThis(TEST_URL);
+		unlikeThisUrl();
 
 		printDescription(SCENE_END);
 	}
 
-	private void getNewToken() throws Exception {
-		ResultActions action = mockMvc.perform(get("/api/v1/token"));
-		MvcResult result = action
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.success").value(true))
-				.andReturn();
-		String body = result.getResponse().getContentAsString();
-
-		ApiResult<String> apiResult = convertJsonStringToObject(body, new TypeReference<ApiResult<String>>() {
-		});
-		String newToken = apiResult.getResponse();
-
-		token = JWT_AUTH_PREFIX + newToken;
-		assertThat(token, is(not(emptyString())));
+	private void getNewTokenForIltp() throws Exception {
+		token = GET_token();
 	}
 
-	private void getLikeOf(final String url) throws Exception {
-		ResultActions action = mockMvc.perform(get("/api/v1/like")
-				.param("url", url)
-				.header("Authorization", token));
-		MvcResult result = action
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.success").value(true))
-				.andReturn();
-		String body = result.getResponse().getContentAsString();
-
-		ApiResult<LikeResponseDto> apiResult = convertJsonStringToObject(body, new TypeReference<>() {
-		});
-
-		LikeResponseDto likeResponseDto = apiResult.getResponse();
+	private void getLikeOfUrl() throws Exception {
+		LikeResponseDto likeResponseDto = GET_like(TEST_URL, token);
 
 		assertThat(likeResponseDto, is(notNullValue()));
 		assertThat(likeResponseDto.isLikeStatus(), is(false));
 		assertThat(likeResponseDto.getLikeCount(), is(3L));
 	}
 
-	private void likeThis(final String url) throws Exception {
-		ResultActions action = mockMvc.perform(post("/api/v1/like")
-				.param("url", url)
-				.header("Authorization", token));
-
-		MvcResult result = action.andExpect(status().isOk())
-				.andExpect(jsonPath("$.success").value(true))
-				.andReturn();
-		String body = result.getResponse().getContentAsString();
-		ApiResult<LikeResponseDto> apiResult = convertJsonStringToObject(body, new TypeReference<>() {
-		});
-
-		LikeResponseDto likeResponseDto = apiResult.getResponse();
+	private void likeThisUrl() throws Exception {
+		LikeResponseDto likeResponseDto = POST_like(TEST_URL, token);
 
 		assertThat(likeResponseDto, is(notNullValue()));
 		assertThat(likeResponseDto.isLikeStatus(), is(true));
 		assertThat(likeResponseDto.getLikeCount(), is(4L));
 	}
 
-	private void unlikeThis(final String url) throws Exception {
-		ResultActions action = mockMvc.perform(delete("/api/v1/like")
-				.param("url", url)
-				.header("Authorization", token));
-
-		MvcResult result = action.andExpect(status().isOk())
-				.andExpect(jsonPath("$.success").value(true))
-				.andReturn();
-
-		String body = result.getResponse().getContentAsString();
-		ApiResult<LikeResponseDto> apiResult = convertJsonStringToObject(body, new TypeReference<>() {
-		});
-
-		LikeResponseDto likeResponseDto = apiResult.getResponse();
+	private void unlikeThisUrl() throws Exception {
+		LikeResponseDto likeResponseDto = DELETE_like(TEST_URL, token);
 
 		assertThat(likeResponseDto, is(notNullValue()));
 		assertThat(likeResponseDto.isLikeStatus(), is(false));
