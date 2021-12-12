@@ -10,11 +10,10 @@ on:
 jobs:
   fe-ci-and-be-cicd:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
+        
       - name: Set up Node 14
         uses: actions/setup-node@v2
         with:
@@ -69,7 +68,7 @@ jobs:
           iltp-backend.zip s3://iltp-deploy-bucket/
         working-directory: i-like-this-page-backend
 
-      - name: Deploy
+      - name: Deploy zipped file from S3 to EC2
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -79,3 +78,4 @@ jobs:
           --deployment-group-name iltp-deploy-group \
           --s3-location bucket=iltp-deploy-bucket,bundleType=zip,key=iltp-backend.zip \
           --region ap-northeast-2
+        working-directory: i-like-this-page-backend
