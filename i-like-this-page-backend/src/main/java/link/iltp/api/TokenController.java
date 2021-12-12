@@ -21,7 +21,7 @@ public class TokenController {
 
 	@GetMapping("")
 	public ApiResult<String> getToken() {
-		log.info("Get new token");
+		log.info("Get new TOKEN");
 		return ApiResult.success(
 				jwtTokenProvider.generateNewToken()
 		);
