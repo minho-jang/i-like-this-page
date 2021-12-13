@@ -4,6 +4,9 @@ import unlikeIcon from '../images/unlike-cat-64x64.png';
 
 import { getLike, deleteLike, addLike } from './api.js';
 
+let userLikeStatus = false;
+const iltpContainer = document.getElementById('i-like-this-page');
+
 const renderButton = (isError = false) => {
   const iltpBoxEl = document.createElement('div');
   iltpBoxEl.setAttribute('id', 'iltp-box');
@@ -29,13 +32,13 @@ const renderErrorButton = (iltpBoxEl) => {
 const renderLikeButton = (iltpBoxEl) => {
   const iltpIconEl = document.createElement('span');
   iltpIconEl.setAttribute('id', 'iltp-content-icon');
-  const heartImageEl = document.createElement('img');
-  heartImageEl.setAttribute('id', 'iltp-content-icon-img');
-  heartImageEl.width = 24;
-  heartImageEl.height = 24;
-  heartImageEl.src = unlikeIcon;
+  const iconImageEl = document.createElement('img');
+  iconImageEl.setAttribute('id', 'iltp-content-icon-img');
+  iconImageEl.width = 24;
+  iconImageEl.height = 24;
+  iconImageEl.src = unlikeIcon;
 
-  iltpIconEl.appendChild(heartImageEl);
+  iltpIconEl.appendChild(iconImageEl);
   iltpBoxEl.appendChild(iltpIconEl);
 
   const iltpNumberEl = document.createElement('span');
@@ -50,9 +53,6 @@ const removeLikeButtonIfExisted = () => {
     iltpContainer.removeChild(iltpContainer.childNodes[0]);
   }
 };
-
-let userLikeStatus = false;
-const iltpContainer = document.getElementById('i-like-this-page');
 
 iltpContainer.addEventListener('click', () => {
   const isNotError = document.getElementById('iltp-content-number');
@@ -114,6 +114,9 @@ const renderApiResult = (apiResult) => {
   document.getElementById('iltp-content-number').innerText = numberWithComma(
     apiResult.response.likeCount
   );
+  userLikeStatus
+    ? document.getElementById('iltp-box').classList.add('iltp-box-like')
+    : document.getElementById('iltp-box').classList.remove('iltp-box-like');
 };
 
 const numberWithComma = (num) => {
