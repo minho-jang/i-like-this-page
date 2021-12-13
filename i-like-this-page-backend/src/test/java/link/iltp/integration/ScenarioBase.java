@@ -1,7 +1,6 @@
 package link.iltp.integration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import link.iltp.api.ApiResult;
 import link.iltp.common.dto.LikeResponseDto;
@@ -34,9 +33,10 @@ public class ScenarioBase {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	public <T> T convertJsonStringToObject(String jsonString, TypeReference<T> typeReference) {
+	public <T> ApiResult<T> convertJsonStringToApiResult(String jsonString, Class<T> responseType) {
 		try {
-			return objectMapper.readValue(jsonString, typeReference);
+			return objectMapper.readValue(jsonString, objectMapper.getTypeFactory()
+					.constructParametricType(ApiResult.class, responseType));
 		} catch (JsonProcessingException e) {
 			throw new IllegalArgumentException("Something wrong with reading the json string.", e);
 		}
@@ -56,8 +56,7 @@ public class ScenarioBase {
 				.andReturn();
 
 		String content = mvcResult.getResponse().getContentAsString();
-		ApiResult<String> apiResult = convertJsonStringToObject(content, new TypeReference<>() {
-		});
+		ApiResult<String> apiResult = convertJsonStringToApiResult(content, String.class);
 
 		assertThat(apiResult.getResponse(), is(not(emptyString())));
 		return JWT_AUTH_PREFIX + apiResult.getResponse();
@@ -73,8 +72,7 @@ public class ScenarioBase {
 				.andReturn();
 
 		String content = mvcResult.getResponse().getContentAsString();
-		ApiResult<LikeResponseDto> apiResult = convertJsonStringToObject(content, new TypeReference<>() {
-		});
+		ApiResult<LikeResponseDto> apiResult = convertJsonStringToApiResult(content, LikeResponseDto.class);
 
 		assertThat(apiResult.getResponse(), is(notNullValue()));
 		return apiResult.getResponse();
@@ -90,8 +88,7 @@ public class ScenarioBase {
 				.andReturn();
 
 		String content = mvcResult.getResponse().getContentAsString();
-		ApiResult<LikeResponseDto> apiResult = convertJsonStringToObject(content, new TypeReference<>() {
-		});
+		ApiResult<LikeResponseDto> apiResult = convertJsonStringToApiResult(content, LikeResponseDto.class);
 
 		assertThat(apiResult.getResponse(), is(notNullValue()));
 		return apiResult.getResponse();
@@ -107,8 +104,7 @@ public class ScenarioBase {
 				.andReturn();
 
 		String content = mvcResult.getResponse().getContentAsString();
-		ApiResult<LikeResponseDto> apiResult = convertJsonStringToObject(content, new TypeReference<>() {
-		});
+		ApiResult<LikeResponseDto> apiResult = convertJsonStringToApiResult(content, LikeResponseDto.class);
 
 		assertThat(apiResult.getResponse(), is(notNullValue()));
 		return apiResult.getResponse();
