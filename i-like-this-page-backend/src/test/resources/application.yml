@@ -1,17 +1,16 @@
+# Test
 spring:
   profiles:
-    active: dev
+    active: test
 
 ---
 spring:
-  profiles: dev
+  profiles: test
   jpa:
-    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
-    h2:
-      console:
-        enabled: true
+    defer-datasource-initialization: true
   jwt:
     issuer: i-like-this-page
     secret: secret
