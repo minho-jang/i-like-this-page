@@ -1,10 +1,12 @@
 # i-like-this-page
 
 <div align="center">
-  <img src="images/example-16x9.gif" alt="i-like-this-page example" style="width: 50%">
+  <img src="images/iltp-example.gif" alt="i-like-this-page example" style="width: 50%">
 </div>
 
 It's a **widget** that allows visitors to mark "_LIKE_" on your page.
+
+[![CI/CD](https://github.com/minho-jang/i-like-this-page/actions/workflows/cicd.yml/badge.svg)](https://github.com/minho-jang/i-like-this-page/actions/workflows/cicd.yml)
 
 ## How to use
 

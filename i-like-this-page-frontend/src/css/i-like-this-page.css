@@ -22,6 +22,9 @@
   font-family: monospace;
   cursor: not-allowed;
 }
+.iltp-box-like {
+  box-shadow: 0 0 0.3em rgb(255, 162, 162);
+}
 .iltp-box::before {
   content: '';
   position: absolute;
@@ -38,7 +41,7 @@
 }
 .iltp-box:hover::before {
   opacity: 1;
-  background-color: rgba(192, 192, 192, 0.1);
+  background-color: rgba(209, 209, 209, 0.1);
   -webkit-transform: scaleX(1);
   transform: scaleX(1);
   transition: -webkit-transform 0.6s cubic-bezier(0.08, 0.35, 0.13, 1.02),
