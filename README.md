@@ -22,4 +22,4 @@ It's a **widget** that allows visitors to mark "_LIKE_" on your page.
 
 ## Usage example
 
-There is a widget at the bottom of [my blog post](https://minho-jang.github.io/development/18/).
+Visit [my blog post](https://minho-jang.github.io/i-like-this-page/readme/).
