@@ -6,6 +6,8 @@
 
 It's a **widget** that allows visitors to mark "_LIKE_" on your page.
 
+[![CI/CD](https://github.com/minho-jang/i-like-this-page/actions/workflows/cicd.yml/badge.svg)](https://github.com/minho-jang/i-like-this-page/actions/workflows/cicd.yml)
+
 ## How to use
 
 ### Get `i-like-this-page` script
