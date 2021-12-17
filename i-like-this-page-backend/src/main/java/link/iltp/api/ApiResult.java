@@ -1,17 +1,16 @@
 package link.iltp.api;
 
+import lombok.*;
 import org.springframework.http.HttpStatus;
 
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
+@Setter
 public class ApiResult<T> {
-	private final boolean success;
-	private final T response;
-	private final ApiError error;
-
-	private ApiResult(boolean success, T response, ApiError error) {
-		this.success = success;
-		this.response = response;
-		this.error = error;
-	}
+	private boolean success;
+	private T response;
+	private ApiError error;
 
 	public static <T> ApiResult<T> success(T response) {
 		return new ApiResult<>(true, response, null);
@@ -23,17 +22,5 @@ public class ApiResult<T> {
 
 	public static ApiResult<?> error(String message, HttpStatus status) {
 		return new ApiResult<>(false, null, new ApiError(message, status));
-	}
-
-	public boolean isSuccess() {
-		return success;
-	}
-
-	public T getResponse() {
-		return response;
-	}
-
-	public ApiError getError() {
-		return error;
 	}
 }
