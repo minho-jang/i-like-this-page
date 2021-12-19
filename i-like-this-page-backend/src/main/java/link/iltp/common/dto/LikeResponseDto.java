@@ -3,8 +3,10 @@ package link.iltp.common.dto;
 import lombok.*;
 
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
+@Setter
+@Builder
 @ToString
 public class LikeResponseDto {
 	private String url;
