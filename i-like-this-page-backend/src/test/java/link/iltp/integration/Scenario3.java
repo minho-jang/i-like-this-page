@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 public class Scenario3 extends ScenarioBase {
-	private static final int THREAD_POOL_SIZE = 10;
+	private static final int THREAD_POOL_SIZE = 20;
 	private static final int USER_NUM = 100;
 	private static final String TEST_URL = "localhost/test/1/";
 	private static final String SCENE_0 = "0. " + USER_NUM + "명이 동시에 URL [" + TEST_URL + "]에 접속하려고 한다.";
