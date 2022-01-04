@@ -1,14 +1,13 @@
 package link.iltp.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
+@EqualsAndHashCode
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "likes")

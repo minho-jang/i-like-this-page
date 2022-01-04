@@ -17,10 +17,6 @@ public class ApiResult<T> {
 		return new ApiResult<>(true, response, null);
 	}
 
-	public static ApiResult<?> error(Throwable throwable, HttpStatus status) {
-		return new ApiResult<>(false, null, new ApiError(throwable, status));
-	}
-
 	public static ApiResult<?> error(String message, HttpStatus status) {
 		return new ApiResult<>(false, null, new ApiError(message, status));
 	}

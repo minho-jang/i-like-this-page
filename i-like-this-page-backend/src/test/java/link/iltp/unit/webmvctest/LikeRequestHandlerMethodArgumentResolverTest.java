@@ -34,8 +34,7 @@ public class LikeRequestHandlerMethodArgumentResolverTest {
 	@DisplayName("URL이 없을 때, POST /api/v1/like 테스트")
 	public void addLikeWithoutUrl() throws Exception {
 		// given
-		final String uuid = NORMAL_UUID;
-		final String token = JWT_AUTH_PREFIX + jwtTokenProvider.generateToken(uuid);
+		final String token = JWT_AUTH_PREFIX + jwtTokenProvider.generateToken(NORMAL_UUID);
 
 		// when
 		final ResultActions actions = mockMvc.perform(post("/api/v1/like")
@@ -51,12 +50,9 @@ public class LikeRequestHandlerMethodArgumentResolverTest {
 	@Test
 	@DisplayName("authorization이 없을 때, POST /api/v1/like 테스트")
 	public void addLikeWithoutAuth() throws Exception {
-		// given
-		final String url = NORMAL_URL;
-
 		// when
 		final ResultActions actions = mockMvc.perform(post("/api/v1/like")
-				.param("url", url));
+				.param("url", NORMAL_URL));
 
 		// then
 		actions.andExpect(status().is4xxClientError())
@@ -69,12 +65,29 @@ public class LikeRequestHandlerMethodArgumentResolverTest {
 	@DisplayName("authorization이 부적절할 때, POST /api/v1/like 테스트")
 	public void addLikeWithInvalidAuth() throws Exception {
 		// given
-		final String url = NORMAL_URL;
 		final String token = JWT_AUTH_PREFIX + "ANY_INVALID_TOKEN";
 
 		// when
 		final ResultActions actions = mockMvc.perform(post("/api/v1/like")
-				.param("url", url)
+				.param("url", NORMAL_URL)
+				.header("Authorization", token));
+
+		// then
+		actions.andExpect(status().is4xxClientError())
+				.andExpect(jsonPath("$.success").value("false"))
+				.andExpect(jsonPath("$.response").doesNotExist())
+				.andExpect(jsonPath("$.error").exists());
+	}
+
+	@Test
+	@DisplayName("authorization prefix 부적절할 때, POST /api/v1/like 테스트")
+	public void addLikeWithInvalidAuthPrefix() throws Exception {
+		// given
+		final String token = "TEMP-PREFIX" + jwtTokenProvider.generateToken(NORMAL_UUID);
+
+		// when
+		final ResultActions actions = mockMvc.perform(post("/api/v1/like")
+				.param("url", NORMAL_URL)
 				.header("Authorization", token));
 
 		// then
@@ -88,12 +101,11 @@ public class LikeRequestHandlerMethodArgumentResolverTest {
 	@DisplayName("토큰은 맞지만 UUID가 없을 때, POST /api/v1/like 테스트")
 	public void addLikeWithValidAuthNoUuid() throws Exception {
 		// given
-		final String url = NORMAL_URL;
 		final String token = JWT_AUTH_PREFIX + jwtTokenProvider.generateToken("");
 
 		// when
 		final ResultActions actions = mockMvc.perform(post("/api/v1/like")
-				.param("url", url)
+				.param("url", NORMAL_URL)
 				.header("Authorization", token));
 
 		// then
